@@ -1,22 +1,22 @@
-# `@murga/components`
+# `@murga.ing/components`
 
 Accessible web components built with Lit, with optional React wrappers.
 
 ## Install
 
 ```bash
-bun add @murga/components
+bun add @murga.ing/components
 ```
 
 `lit` is a peer dependency. React and React DOM are optional peers required only
-when importing `@murga/components/react`.
+when importing `@murga.ing/components/react`.
 
 ## Register components
 
 Register the complete library once:
 
 ```ts
-import { registerMurgaComponents } from "@murga/components/register";
+import { registerMurgaComponents } from "@murga.ing/components/register";
 
 registerMurgaComponents();
 ```
@@ -24,7 +24,7 @@ registerMurgaComponents();
 Or register only the component you use:
 
 ```ts
-import { defineMcButton } from "@murga/components/components/mc-button";
+import { defineMcButton } from "@murga.ing/components/components/mc-button";
 
 defineMcButton();
 ```
@@ -32,14 +32,14 @@ defineMcButton();
 The root entrypoint has no registration side effects:
 
 ```ts
-import { McButton, registerMurgaComponents } from "@murga/components";
+import { McButton, registerMurgaComponents } from "@murga.ing/components";
 ```
 
 ## React
 
 ```tsx
-import { registerMurgaComponents } from "@murga/components/register";
-import { McButton } from "@murga/components/react";
+import { registerMurgaComponents } from "@murga.ing/components/register";
+import { McButton } from "@murga.ing/components/react";
 
 registerMurgaComponents();
 

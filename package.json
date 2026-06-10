@@ -1,6 +1,6 @@
 {
-  "name": "@murga/components",
-  "version": "0.1.0",
+  "name": "@murga.ing/components",
+  "version": "0.1.1",
   "description": "Accessible Lit web components with optional React wrappers.",
   "license": "MIT",
   "type": "module",
