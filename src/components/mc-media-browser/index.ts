@@ -1,5 +1,5 @@
 import { html, LitElement, nothing } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { property, state } from "lit/decorators.js";
 
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
@@ -17,7 +17,6 @@ export const TAG_NAME = MC_MEDIA_BROWSER_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
-@customElement(MC_MEDIA_BROWSER_TAG_NAME)
 export class McMediaBrowser extends LitElement {
   static styles = [murgaThemeStyles, murgaSurfaceStyles, murgaMetaStyles, componentStyles];
 

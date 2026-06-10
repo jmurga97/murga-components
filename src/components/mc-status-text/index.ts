@@ -1,5 +1,5 @@
 import { html, LitElement } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
@@ -25,7 +25,6 @@ function getDefaultLabel(tone: McStatusTone) {
   }
 }
 
-@customElement(MC_STATUS_TEXT_TAG_NAME)
 export class McStatusText extends LitElement {
   static styles = [murgaThemeStyles, murgaMetaStyles, componentStyles];
 

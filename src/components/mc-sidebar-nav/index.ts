@@ -1,5 +1,5 @@
 import { html, LitElement, nothing } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { property, query } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 
 import componentStylesText from "./styles.css?inline";
@@ -16,7 +16,6 @@ export const TAG_NAME = MC_SIDEBAR_NAV_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
-@customElement(MC_SIDEBAR_NAV_TAG_NAME)
 export class McSidebarNav extends LitElement {
   static styles = [murgaThemeStyles, murgaLabelStyles, murgaMetaStyles, componentStyles];
 

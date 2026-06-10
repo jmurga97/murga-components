@@ -49,4 +49,3 @@ export {
   McThumbnailRail,
   type McThumbnailRailProps,
 } from "./react/wrappers";
-export { reactWrapperEntryPoint } from "./react-entry";

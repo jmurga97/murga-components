@@ -1,5 +1,5 @@
 import { html, LitElement } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { property, state } from "lit/decorators.js";
 
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
@@ -13,7 +13,6 @@ export const TAG_NAME = MC_PAGINATION_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
-@customElement(MC_PAGINATION_TAG_NAME)
 export class McPagination extends LitElement {
   static styles = [murgaThemeStyles, murgaButtonStyles, murgaMetaStyles, componentStyles];
 

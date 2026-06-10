@@ -1,5 +1,5 @@
 import { html, LitElement, nothing } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { property, query } from "lit/decorators.js";
 
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
@@ -14,7 +14,6 @@ export const TAG_NAME = MC_APP_SHELL_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
-@customElement(MC_APP_SHELL_TAG_NAME)
 export class McAppShell extends LitElement {
   static styles = [murgaThemeStyles, murgaPanelStyles, componentStyles];
 

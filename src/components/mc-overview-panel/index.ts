@@ -1,5 +1,5 @@
 import { html, LitElement, nothing } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
 
@@ -19,7 +19,6 @@ export const TAG_NAME = MC_OVERVIEW_PANEL_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
-@customElement(MC_OVERVIEW_PANEL_TAG_NAME)
 export class McOverviewPanel extends LitElement {
   static styles = [
     murgaThemeStyles,

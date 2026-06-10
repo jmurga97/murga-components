@@ -1,5 +1,5 @@
 import { html, LitElement } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
@@ -12,7 +12,6 @@ export const TAG_NAME = MC_BADGE_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
-@customElement(MC_BADGE_TAG_NAME)
 export class McBadge extends LitElement {
   static styles = [murgaThemeStyles, murgaLabelStyles, componentStyles];
 

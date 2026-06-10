@@ -1,5 +1,5 @@
 import { html, LitElement } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import componentStylesText from "./styles.css?inline";
@@ -14,7 +14,6 @@ export const TAG_NAME = MC_THUMBNAIL_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
-@customElement(MC_THUMBNAIL_TAG_NAME)
 export class McThumbnail extends LitElement {
   static styles = [murgaThemeStyles, murgaMetaStyles, componentStyles];
 

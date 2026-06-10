@@ -1,0 +1,1 @@
+export { registerMurgaComponents } from "./index";

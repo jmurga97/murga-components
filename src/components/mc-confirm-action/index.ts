@@ -1,5 +1,5 @@
 import { html, LitElement, nothing } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
@@ -13,7 +13,6 @@ export const TAG_NAME = MC_CONFIRM_ACTION_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
-@customElement(MC_CONFIRM_ACTION_TAG_NAME)
 export class McConfirmAction extends LitElement {
   static styles = [murgaThemeStyles, murgaPanelStyles, murgaButtonStyles, componentStyles];
 

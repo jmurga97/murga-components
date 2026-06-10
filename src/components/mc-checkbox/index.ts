@@ -1,5 +1,5 @@
 import { html, LitElement } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import componentStylesText from "./styles.css?inline";
@@ -13,7 +13,6 @@ export const TAG_NAME = MC_CHECKBOX_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
-@customElement(MC_CHECKBOX_TAG_NAME)
 export class McCheckbox extends LitElement {
   static styles = [murgaThemeStyles, componentStyles];
 

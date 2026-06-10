@@ -1,5 +1,5 @@
 import { html, LitElement, nothing } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
@@ -10,7 +10,6 @@ export const TAG_NAME = MC_FIELD_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
-@customElement(MC_FIELD_TAG_NAME)
 export class McField extends LitElement {
   static styles = [murgaThemeStyles, murgaLabelStyles, murgaMetaStyles, componentStyles];
 

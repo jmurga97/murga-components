@@ -1,5 +1,5 @@
 import { html, LitElement, nothing } from "lit";
-import { customElement, property, query, state } from "lit/decorators.js";
+import { property, query, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { repeat } from "lit/directives/repeat.js";
 
@@ -26,7 +26,6 @@ export const TAG_NAME = MC_SELECT_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
-@customElement(MC_SELECT_TAG_NAME)
 export class McSelect extends LitElement {
   static styles = [
     murgaThemeStyles,

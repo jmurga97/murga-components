@@ -1,5 +1,5 @@
 import { html, LitElement } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 
 import componentStylesText from "./styles.css?inline";
@@ -16,7 +16,6 @@ export const TAG_NAME = MC_THUMBNAIL_RAIL_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
-@customElement(MC_THUMBNAIL_RAIL_TAG_NAME)
 export class McThumbnailRail extends LitElement {
   static styles = [murgaThemeStyles, componentStyles];
 

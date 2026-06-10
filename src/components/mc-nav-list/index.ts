@@ -1,5 +1,5 @@
 import { html, LitElement, nothing } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 
 import componentStylesText from "./styles.css?inline";
@@ -14,7 +14,6 @@ export const TAG_NAME = MC_NAV_LIST_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
-@customElement(MC_NAV_LIST_TAG_NAME)
 export class McNavList extends LitElement {
   static styles = [murgaThemeStyles, murgaLabelStyles, murgaMetaStyles, componentStyles];
 
