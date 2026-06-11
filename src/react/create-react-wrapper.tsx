@@ -1,6 +1,6 @@
-import { createElement, forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { createElement, forwardRef, useCallback, useRef } from "react";
 
-import type { HTMLAttributes, ReactNode } from "react";
+import type { ForwardedRef, HTMLAttributes, ReactNode } from "react";
 
 export type ReactWrapperProps<
   TElement extends HTMLElement,
@@ -16,96 +16,81 @@ export function createReactWrapper<
   TElement extends HTMLElement,
   TPropertyProps extends object,
   TEventProps extends object,
->(config: {
-  tagName: string;
-  propertyKeys: Array<keyof TPropertyProps>;
-  eventMap: Record<keyof TEventProps, `mc-${string}`>;
-}) {
+>(config: { tagName: string; eventMap: Record<keyof TEventProps, `mc-${string}`> }) {
   type Props = ReactWrapperProps<TElement, TPropertyProps, TEventProps>;
-  const { eventMap, propertyKeys, tagName } = config;
+  const { eventMap, tagName } = config;
+  const eventEntries = Object.entries(eventMap as Record<string, `mc-${string}`>);
+  const eventKeySet = new Set(eventEntries.map(([propName]) => propName));
 
   return forwardRef<TElement, Props>(function MurgaReactWrapper(props, forwardedRef) {
-    const localRef = useRef<TElement | null>(null);
     const latestProps = useRef(props);
-    const propertyKeysRef = useRef(propertyKeys);
-    const eventMapRef = useRef(eventMap);
+    const latestForwardedRef = useRef(forwardedRef);
 
     latestProps.current = props;
+    latestForwardedRef.current = forwardedRef;
 
-    useImperativeHandle(forwardedRef, () => {
-      if (!localRef.current) {
-        throw new Error(`Unable to resolve ref for ${tagName}`);
-      }
-
-      return localRef.current;
-    });
-
-    useEffect(() => {
-      const element = localRef.current;
-
+    const setRef = useCallback((element: TElement | null) => {
       if (!element) {
         return;
       }
 
-      for (const propertyKey of propertyKeysRef.current) {
-        const key = propertyKey as string;
-        const value = (props as Record<string, unknown>)[key];
+      const mountedForwardedRef = latestForwardedRef.current;
+      const forwardedRefCleanup = assignRef(mountedForwardedRef, element);
+      const listeners = eventEntries.map(([propName, eventName]) => {
+        const listener = (event: Event) => {
+          const currentProps = latestProps.current as Record<string, unknown>;
+          const handler = currentProps[propName];
 
-        if (value === undefined) {
-          continue;
-        }
+          if (typeof handler === "function") {
+            (handler as (event: Event) => void)(event);
+          }
+        };
 
-        (element as Record<string, unknown>)[key] = value;
-      }
-    }, [props]);
+        element.addEventListener(eventName, listener);
 
-    useEffect(() => {
-      const element = localRef.current;
-
-      if (!element) {
-        return;
-      }
-
-      const cleanups = Object.entries(eventMapRef.current as Record<string, string>).map(
-        ([propName, eventName]) => {
-          const listener = (event: Event) => {
-            const currentProps = latestProps.current as Record<string, unknown>;
-            const handler = currentProps[propName];
-
-            if (typeof handler === "function") {
-              (handler as (event: Event) => void)(event);
-            }
-          };
-
-          element.addEventListener(eventName, listener);
-
-          return () => {
-            element.removeEventListener(eventName, listener);
-          };
-        },
-      );
+        return { eventName, listener };
+      });
 
       return () => {
-        for (const cleanup of cleanups) {
-          cleanup();
+        for (const { eventName, listener } of listeners) {
+          element.removeEventListener(eventName, listener);
+        }
+
+        if (forwardedRefCleanup) {
+          forwardedRefCleanup();
+        } else {
+          assignRef(mountedForwardedRef, null);
         }
       };
     }, []);
 
-    const propertyKeySet = new Set<string>(propertyKeys.map((key) => key as string));
-    const eventKeySet = new Set<string>(Object.keys(eventMap));
     const domProps: Record<string, unknown> = {};
 
     for (const [key, value] of Object.entries(props as Record<string, unknown>)) {
-      if (key === "children" || propertyKeySet.has(key) || eventKeySet.has(key)) {
+      if (key === "children" || eventKeySet.has(key)) {
         continue;
       }
 
-      domProps[key] = value;
+      domProps[key === "ariaLabel" ? "aria-label" : key] = value;
     }
 
     const children = (props as { children?: ReactNode }).children;
 
-    return createElement(tagName, { ...domProps, ref: localRef }, children);
+    return createElement(tagName, { ...domProps, ref: setRef }, children);
   });
+}
+
+function assignRef<TElement>(
+  ref: ForwardedRef<TElement>,
+  value: TElement | null,
+): (() => void) | undefined {
+  if (typeof ref === "function") {
+    return ref(value) ?? undefined;
+  }
+
+  if (ref) {
+    ref.current = value;
+  }
+
+  return undefined;
 }

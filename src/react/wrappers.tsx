@@ -2,16 +2,11 @@ import { createReactWrapper } from "./create-react-wrapper";
 
 import type { ReactWrapperProps } from "./create-react-wrapper";
 import type { McAppShell as McAppShellElement } from "../components/mc-app-shell";
-import type { McBadge as McBadgeElement } from "../components/mc-badge";
-import type { McButton as McButtonElement } from "../components/mc-button";
 import type { McCheckbox as McCheckboxElement } from "../components/mc-checkbox";
 import type { McConfirmAction as McConfirmActionElement } from "../components/mc-confirm-action";
-import type { McField as McFieldElement } from "../components/mc-field";
-import type { McInlineMessage as McInlineMessageElement } from "../components/mc-inline-message";
 import type { McInput as McInputElement } from "../components/mc-input";
 import type { McMediaBrowser as McMediaBrowserElement } from "../components/mc-media-browser";
 import type { McNavList as McNavListElement } from "../components/mc-nav-list";
-import type { McOverviewPanel as McOverviewPanelElement } from "../components/mc-overview-panel";
 import type { McPagination as McPaginationElement } from "../components/mc-pagination";
 import type { McRelationshipPanel as McRelationshipPanelElement } from "../components/mc-relationship-panel";
 import type { McResourceEditor as McResourceEditorElement } from "../components/mc-resource-editor";
@@ -19,7 +14,6 @@ import type { McResourceTable as McResourceTableElement } from "../components/mc
 import type { McSearchField as McSearchFieldElement } from "../components/mc-search-field";
 import type { McSelect as McSelectElement } from "../components/mc-select";
 import type { McSidebarNav as McSidebarNavElement } from "../components/mc-sidebar-nav";
-import type { McStatusText as McStatusTextElement } from "../components/mc-status-text";
 import type { McTagList as McTagListElement } from "../components/mc-tag-list";
 import type { McTagPicker as McTagPickerElement } from "../components/mc-tag-picker";
 import type { McTextarea as McTextareaElement } from "../components/mc-textarea";
@@ -54,42 +48,9 @@ export const McAppShell = createReactWrapper<
   McAppShellEventProps
 >({
   tagName: "mc-app-shell",
-  propertyKeys: ["sidebarOpen", "mobileOverlay"],
   eventMap: {
     onMcSidebarOpenChange: "mc-sidebar-open-change",
   },
-});
-
-type McBadgePropertyProps = Partial<Pick<McBadgeElement, "tone">>;
-type McBadgeEventProps = Record<never, never>;
-export type McBadgeProps = ReactWrapperProps<
-  McBadgeElement,
-  McBadgePropertyProps,
-  McBadgeEventProps
->;
-export const McBadge = createReactWrapper<McBadgeElement, McBadgePropertyProps, McBadgeEventProps>({
-  tagName: "mc-badge",
-  propertyKeys: ["tone"],
-  eventMap: {},
-});
-
-type McButtonPropertyProps = Partial<
-  Pick<McButtonElement, "variant" | "size" | "type" | "disabled" | "pending" | "ariaLabel">
->;
-type McButtonEventProps = Record<never, never>;
-export type McButtonProps = ReactWrapperProps<
-  McButtonElement,
-  McButtonPropertyProps,
-  McButtonEventProps
->;
-export const McButton = createReactWrapper<
-  McButtonElement,
-  McButtonPropertyProps,
-  McButtonEventProps
->({
-  tagName: "mc-button",
-  propertyKeys: ["variant", "size", "type", "disabled", "pending", "ariaLabel"],
-  eventMap: {},
 });
 
 type McCheckboxPropertyProps = Partial<
@@ -109,25 +70,9 @@ export const McCheckbox = createReactWrapper<
   McCheckboxEventProps
 >({
   tagName: "mc-checkbox",
-  propertyKeys: ["checked", "name", "value", "disabled", "required", "ariaLabel"],
   eventMap: {
     onMcChange: "mc-change",
   },
-});
-
-type McFieldPropertyProps = Partial<
-  Pick<McFieldElement, "inputId" | "label" | "hint" | "error" | "required" | "optional" | "invalid">
->;
-type McFieldEventProps = Record<never, never>;
-export type McFieldProps = ReactWrapperProps<
-  McFieldElement,
-  McFieldPropertyProps,
-  McFieldEventProps
->;
-export const McField = createReactWrapper<McFieldElement, McFieldPropertyProps, McFieldEventProps>({
-  tagName: "mc-field",
-  propertyKeys: ["inputId", "label", "hint", "error", "required", "optional", "invalid"],
-  eventMap: {},
 });
 
 type McInputPropertyProps = Partial<
@@ -158,20 +103,6 @@ export type McInputProps = ReactWrapperProps<
 >;
 export const McInput = createReactWrapper<McInputElement, McInputPropertyProps, McInputEventProps>({
   tagName: "mc-input",
-  propertyKeys: [
-    "value",
-    "inputId",
-    "name",
-    "type",
-    "placeholder",
-    "autocomplete",
-    "disabled",
-    "required",
-    "readonly",
-    "maxlength",
-    "invalid",
-    "ariaLabel",
-  ],
   eventMap: {
     onMcInput: "mc-input",
     onMcChange: "mc-change",
@@ -209,19 +140,6 @@ export const McTextarea = createReactWrapper<
   McTextareaEventProps
 >({
   tagName: "mc-textarea",
-  propertyKeys: [
-    "value",
-    "inputId",
-    "name",
-    "rows",
-    "placeholder",
-    "disabled",
-    "required",
-    "readonly",
-    "maxlength",
-    "invalid",
-    "ariaLabel",
-  ],
   eventMap: {
     onMcInput: "mc-input",
     onMcChange: "mc-change",
@@ -247,48 +165,11 @@ export const McSearchField = createReactWrapper<
   McSearchFieldEventProps
 >({
   tagName: "mc-search-field",
-  propertyKeys: ["value", "inputId", "name", "placeholder", "disabled", "pending"],
   eventMap: {
     onMcInput: "mc-input",
     onMcChange: "mc-change",
     onMcClear: "mc-clear",
   },
-});
-
-type McInlineMessagePropertyProps = Partial<
-  Pick<McInlineMessageElement, "tone" | "title" | "message">
->;
-type McInlineMessageEventProps = Record<never, never>;
-export type McInlineMessageProps = ReactWrapperProps<
-  McInlineMessageElement,
-  McInlineMessagePropertyProps,
-  McInlineMessageEventProps
->;
-export const McInlineMessage = createReactWrapper<
-  McInlineMessageElement,
-  McInlineMessagePropertyProps,
-  McInlineMessageEventProps
->({
-  tagName: "mc-inline-message",
-  propertyKeys: ["tone", "title", "message"],
-  eventMap: {},
-});
-
-type McStatusTextPropertyProps = Partial<Pick<McStatusTextElement, "tone" | "label" | "polite">>;
-type McStatusTextEventProps = Record<never, never>;
-export type McStatusTextProps = ReactWrapperProps<
-  McStatusTextElement,
-  McStatusTextPropertyProps,
-  McStatusTextEventProps
->;
-export const McStatusText = createReactWrapper<
-  McStatusTextElement,
-  McStatusTextPropertyProps,
-  McStatusTextEventProps
->({
-  tagName: "mc-status-text",
-  propertyKeys: ["tone", "label", "polite"],
-  eventMap: {},
 });
 
 type McConfirmActionPropertyProps = Partial<
@@ -313,7 +194,6 @@ export const McConfirmAction = createReactWrapper<
   McConfirmActionEventProps
 >({
   tagName: "mc-confirm-action",
-  propertyKeys: ["open", "tone", "message", "confirmLabel", "cancelLabel", "disabled", "pending"],
   eventMap: {
     onMcConfirm: "mc-confirm",
     onMcCancel: "mc-cancel",
@@ -338,7 +218,6 @@ export const McPagination = createReactWrapper<
   McPaginationEventProps
 >({
   tagName: "mc-pagination",
-  propertyKeys: ["page", "pageSize", "total", "hasMore", "disabled"],
   eventMap: {
     onMcPageChange: "mc-page-change",
   },
@@ -363,7 +242,6 @@ export const McResourceEditor = createReactWrapper<
   McResourceEditorEventProps
 >({
   tagName: "mc-resource-editor",
-  propertyKeys: ["resourceTitle", "status", "dirty", "saving", "deleting"],
   eventMap: {
     onMcSave: "mc-save",
     onMcCancel: "mc-cancel",
@@ -399,16 +277,6 @@ export const McSelect = createReactWrapper<
   McSelectEventProps
 >({
   tagName: "mc-select",
-  propertyKeys: [
-    "options",
-    "selectedId",
-    "inputId",
-    "name",
-    "placeholder",
-    "disabled",
-    "open",
-    "ariaLabel",
-  ],
   eventMap: {
     onMcChange: "mc-change",
     onMcOpenChange: "mc-open-change",
@@ -432,7 +300,6 @@ export const McTagList = createReactWrapper<
   McTagListEventProps
 >({
   tagName: "mc-tag-list",
-  propertyKeys: ["items", "selectedIds", "interactive"],
   eventMap: {
     onMcSelect: "mc-select",
   },
@@ -456,7 +323,6 @@ export const McTagPicker = createReactWrapper<
   McTagPickerEventProps
 >({
   tagName: "mc-tag-picker",
-  propertyKeys: ["options", "selectedIds", "inputId", "disabled", "open"],
   eventMap: {
     onMcChange: "mc-change",
     onMcOpenChange: "mc-open-change",
@@ -480,7 +346,6 @@ export const McNavList = createReactWrapper<
   McNavListEventProps
 >({
   tagName: "mc-nav-list",
-  propertyKeys: ["items", "ariaLabel", "orientation"],
   eventMap: {
     onMcSelect: "mc-select",
   },
@@ -509,7 +374,6 @@ export const McThumbnail = createReactWrapper<
   McThumbnailEventProps
 >({
   tagName: "mc-thumbnail",
-  propertyKeys: ["itemId", "src", "alt", "selected", "disabled", "loading", "ratio"],
   eventMap: {
     onMcSelect: "mc-select",
   },
@@ -526,7 +390,6 @@ export const McThumbnailRail = createReactWrapper<
   McThumbnailRailEventProps
 >({
   tagName: "mc-thumbnail-rail",
-  propertyKeys: ["items", "selectedId", "ariaLabel", "orientation"],
   eventMap: {
     onMcSelect: "mc-select",
   },
@@ -553,38 +416,10 @@ export const McSidebarNav = createReactWrapper<
   McSidebarNavEventProps
 >({
   tagName: "mc-sidebar-nav",
-  propertyKeys: [
-    "ariaLabel",
-    "footerItems",
-    "items",
-    "secondaryItems",
-    "open",
-    "title",
-    "subtitle",
-  ],
   eventMap: {
     onMcSelect: "mc-select",
     onMcOpenChange: "mc-open-change",
   },
-});
-
-type McOverviewPanelPropertyProps = Partial<
-  Pick<McOverviewPanelElement, "title" | "description" | "stats" | "status">
->;
-type McOverviewPanelEventProps = Record<never, never>;
-export type McOverviewPanelProps = ReactWrapperProps<
-  McOverviewPanelElement,
-  McOverviewPanelPropertyProps,
-  McOverviewPanelEventProps
->;
-export const McOverviewPanel = createReactWrapper<
-  McOverviewPanelElement,
-  McOverviewPanelPropertyProps,
-  McOverviewPanelEventProps
->({
-  tagName: "mc-overview-panel",
-  propertyKeys: ["title", "description", "stats", "status"],
-  eventMap: {},
 });
 
 type McResourceTablePropertyProps = Partial<
@@ -605,7 +440,6 @@ export const McResourceTable = createReactWrapper<
   McResourceTableEventProps
 >({
   tagName: "mc-resource-table",
-  propertyKeys: ["columns", "rows", "selectedId", "loading", "emptyLabel"],
   eventMap: {
     onMcRowSelect: "mc-row-select",
     onMcSort: "mc-sort",
@@ -629,7 +463,6 @@ export const McMediaBrowser = createReactWrapper<
   McMediaBrowserEventProps
 >({
   tagName: "mc-media-browser",
-  propertyKeys: ["items", "selectedId", "showRail", "emptyLabel"],
   eventMap: {
     onMcSelect: "mc-select",
   },
@@ -652,7 +485,6 @@ export const McRelationshipPanel = createReactWrapper<
   McRelationshipPanelEventProps
 >({
   tagName: "mc-relationship-panel",
-  propertyKeys: ["title", "items", "emptyLabel"],
   eventMap: {
     onMcSelect: "mc-select",
   },

@@ -1,6 +1,7 @@
 # `@murga.ing/components`
 
-Accessible web components built with Lit, with optional React wrappers.
+Accessible web components built with Lit, with typed JSX tags and optional React wrappers for
+custom events.
 
 ## Install
 
@@ -8,8 +9,8 @@ Accessible web components built with Lit, with optional React wrappers.
 bun add @murga.ing/components
 ```
 
-`lit` is a peer dependency. React and React DOM are optional peers required only
-when importing `@murga.ing/components/react`.
+`lit` is a peer dependency. React 19 and React DOM 19 are optional peers required only when
+importing `@murga.ing/components/react`.
 
 ## Register components
 
@@ -37,14 +38,42 @@ import { McButton, registerMurgaComponents } from "@murga.ing/components";
 
 ## React
 
+Import the React entrypoint to add all `mc-*` tags to `JSX.IntrinsicElements`. Presentational
+components can then be used directly without a wrapper:
+
 ```tsx
 import { registerMurgaComponents } from "@murga.ing/components/register";
-import { McButton } from "@murga.ing/components/react";
+import "@murga.ing/components/react";
 
 registerMurgaComponents();
 
 export function SaveButton() {
-  return <McButton variant="primary">Save</McButton>;
+  return <mc-button variant="primary">Save</mc-button>;
+}
+```
+
+Components with custom events keep React wrappers that expose typed `onMc*` callbacks:
+
+```tsx
+import { useState } from "react";
+
+import { registerMurgaComponents } from "@murga.ing/components/register";
+import { McTagPicker } from "@murga.ing/components/react";
+
+registerMurgaComponents();
+
+const tags = [{ id: "editorial", label: "Editorial" }];
+
+export function TagPicker() {
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  return (
+    <McTagPicker
+      options={tags}
+      selectedIds={selectedIds}
+      onMcChange={(event) => setSelectedIds(event.detail.selectedIds)}
+    />
+  );
 }
 ```
 

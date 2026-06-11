@@ -1,15 +1,7 @@
 import { useState } from "react";
 
 import { registerMurgaComponents } from "../src";
-import {
-  McBadge,
-  McButton,
-  McInlineMessage,
-  McInput,
-  McOverviewPanel,
-  McStatusText,
-  McTagPicker,
-} from "../src/react";
+import { McInput, McTagPicker } from "../src/react";
 
 registerMurgaComponents();
 
@@ -35,7 +27,7 @@ export function Playground() {
 
       <section className="grid" aria-label="Component examples">
         <article className="panel panel-wide">
-          <McOverviewPanel
+          <mc-overview-panel
             title="Library overview"
             description="ES modules, explicit registration and optional React wrappers."
             stats={[
@@ -48,12 +40,12 @@ export function Playground() {
         <article className="panel">
           <div className="panel-heading">
             <span>Actions</span>
-            <McBadge tone="accent">LIVE</McBadge>
+            <mc-badge tone="accent">LIVE</mc-badge>
           </div>
           <div className="stack">
-            <McButton variant="primary">Publish package</McButton>
-            <McButton variant="secondary">Inspect build</McButton>
-            <McStatusText tone="success" label="[BUILD READY]" />
+            <mc-button variant="primary">Publish package</mc-button>
+            <mc-button variant="secondary">Inspect build</mc-button>
+            <mc-status-text tone="success" label="[BUILD READY]" />
           </div>
         </article>
 
@@ -76,7 +68,7 @@ export function Playground() {
         </article>
 
         <article className="panel panel-wide">
-          <McInlineMessage
+          <mc-inline-message
             tone="success"
             title="Explicit registration"
             message="Import the register entrypoint for every component, or define individual components from granular entrypoints."
