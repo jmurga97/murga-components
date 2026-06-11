@@ -5,7 +5,7 @@ import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
 import { createFocusTrap } from "../../internal/focus";
-import { murgaPanelStyles, murgaThemeStyles } from "../../internal/styles";
+import { murgaThemeStyles } from "../../internal/styles";
 
 import type { PropertyValues } from "lit";
 
@@ -16,7 +16,7 @@ const componentStyles = createComponentStyles(componentStylesText);
 const DESKTOP_SIDEBAR_MEDIA_QUERY = "(min-width: 960px)";
 
 export class McAppShell extends LitElement {
-  static styles = [murgaThemeStyles, murgaPanelStyles, componentStyles];
+  static styles = [murgaThemeStyles, componentStyles];
 
   @property({ type: Boolean, attribute: "sidebar-open", reflect: true })
   sidebarOpen = false;

@@ -5,12 +5,7 @@ import { repeat } from "lit/directives/repeat.js";
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
-import {
-  murgaLabelStyles,
-  murgaMetaStyles,
-  murgaSurfaceStyles,
-  murgaThemeStyles,
-} from "../../internal/styles";
+import { murgaSurfaceStyles, murgaThemeStyles } from "../../internal/styles";
 
 import type { McNavItem } from "../../internal/contracts";
 
@@ -20,13 +15,7 @@ export const TAG_NAME = MC_RELATIONSHIP_PANEL_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McRelationshipPanel extends LitElement {
-  static styles = [
-    murgaThemeStyles,
-    murgaSurfaceStyles,
-    murgaLabelStyles,
-    murgaMetaStyles,
-    componentStyles,
-  ];
+  static styles = [murgaThemeStyles, murgaSurfaceStyles, componentStyles];
 
   @property({ type: String })
   title = "";

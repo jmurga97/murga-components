@@ -4,7 +4,7 @@ import { property } from "lit/decorators.js";
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
-import { murgaButtonStyles, murgaMetaStyles, murgaThemeStyles } from "../../internal/styles";
+import { murgaButtonStyles, murgaThemeStyles } from "../../internal/styles";
 
 export const MC_PAGINATION_TAG_NAME = "mc-pagination";
 export const TAG_NAME = MC_PAGINATION_TAG_NAME;
@@ -12,7 +12,7 @@ export const TAG_NAME = MC_PAGINATION_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McPagination extends LitElement {
-  static styles = [murgaThemeStyles, murgaButtonStyles, murgaMetaStyles, componentStyles];
+  static styles = [murgaThemeStyles, murgaButtonStyles, componentStyles];
 
   @property({ type: Number })
   page = 1;

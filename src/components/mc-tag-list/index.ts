@@ -6,7 +6,7 @@ import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
 import { normalizeSelectedIds, toggleSelectedId } from "../../internal/selection";
-import { murgaLabelStyles, murgaThemeStyles } from "../../internal/styles";
+import { murgaThemeStyles } from "../../internal/styles";
 
 import type { McTagItem } from "../../internal/contracts";
 
@@ -16,7 +16,7 @@ export const TAG_NAME = MC_TAG_LIST_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McTagList extends LitElement {
-  static styles = [murgaThemeStyles, murgaLabelStyles, componentStyles];
+  static styles = [murgaThemeStyles, componentStyles];
 
   @property({ attribute: false })
   items: McTagItem[] = [];

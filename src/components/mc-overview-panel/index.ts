@@ -4,12 +4,7 @@ import { repeat } from "lit/directives/repeat.js";
 
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
-import {
-  murgaLabelStyles,
-  murgaMetaStyles,
-  murgaSurfaceStyles,
-  murgaThemeStyles,
-} from "../../internal/styles";
+import { murgaSurfaceStyles, murgaThemeStyles } from "../../internal/styles";
 
 import type { McInlineStatus, McStatItem } from "../../internal/contracts";
 
@@ -19,13 +14,7 @@ export const TAG_NAME = MC_OVERVIEW_PANEL_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McOverviewPanel extends LitElement {
-  static styles = [
-    murgaThemeStyles,
-    murgaSurfaceStyles,
-    murgaLabelStyles,
-    murgaMetaStyles,
-    componentStyles,
-  ];
+  static styles = [murgaThemeStyles, murgaSurfaceStyles, componentStyles];
 
   @property({ type: String })
   title = "";

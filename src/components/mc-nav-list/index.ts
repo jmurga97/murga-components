@@ -5,7 +5,7 @@ import { repeat } from "lit/directives/repeat.js";
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
-import { murgaLabelStyles, murgaMetaStyles, murgaThemeStyles } from "../../internal/styles";
+import { murgaThemeStyles } from "../../internal/styles";
 
 import type { McNavItem, McOrientation } from "../../internal/contracts";
 
@@ -15,7 +15,7 @@ export const TAG_NAME = MC_NAV_LIST_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McNavList extends LitElement {
-  static styles = [murgaThemeStyles, murgaLabelStyles, murgaMetaStyles, componentStyles];
+  static styles = [murgaThemeStyles, componentStyles];
 
   @property({ attribute: false })
   items: McNavItem[] = [];

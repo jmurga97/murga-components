@@ -51,6 +51,10 @@ img {
   inline-size: 100%;
   block-size: 100%;
   color: var(--text-secondary);
+  font-family: "Space Mono", "JetBrains Mono", "SF Mono", monospace;
+  font-size: var(--caption);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
 }
 
 :host([disabled]) button {

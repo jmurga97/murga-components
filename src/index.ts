@@ -20,6 +20,7 @@ import { defineMcStatusText } from "./components/mc-status-text";
 import { defineMcTagList } from "./components/mc-tag-list";
 import { defineMcTagPicker } from "./components/mc-tag-picker";
 import { defineMcTextarea } from "./components/mc-textarea";
+import { defineMcThemeSwitcher } from "./components/mc-theme-switcher";
 import { defineMcThumbnail } from "./components/mc-thumbnail";
 import { defineMcThumbnailRail } from "./components/mc-thumbnail-rail";
 
@@ -141,6 +142,12 @@ export {
   type McTextareaArgs,
 } from "./components/mc-textarea";
 export {
+  defineMcThemeSwitcher,
+  MC_THEME_SWITCHER_TAG_NAME,
+  McThemeSwitcher,
+  type McThemeSwitcherArgs,
+} from "./components/mc-theme-switcher";
+export {
   defineMcThumbnail,
   MC_THUMBNAIL_TAG_NAME,
   McThumbnail,
@@ -152,6 +159,7 @@ export {
   McThumbnailRail,
   type McThumbnailRailArgs,
 } from "./components/mc-thumbnail-rail";
+export type { McTheme } from "./internal/contracts";
 
 export const murgaComponentRegistry = [
   "mc-app-shell",
@@ -176,6 +184,7 @@ export const murgaComponentRegistry = [
   "mc-tag-list",
   "mc-tag-picker",
   "mc-textarea",
+  "mc-theme-switcher",
   "mc-thumbnail",
   "mc-thumbnail-rail",
 ] as const;
@@ -193,6 +202,7 @@ export function registerMurgaComponents() {
   defineMcSearchField();
   defineMcTagList();
   defineMcTagPicker();
+  defineMcThemeSwitcher();
   defineMcInlineMessage();
   defineMcConfirmAction();
   defineMcPagination();

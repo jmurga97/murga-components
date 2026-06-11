@@ -8,12 +8,7 @@ import { syncAriaAttributes, syncAttribute } from "../../internal/attributes";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
 import { findItemById } from "../../internal/selection";
-import {
-  murgaButtonStyles,
-  murgaMetaStyles,
-  murgaPanelStyles,
-  murgaThemeStyles,
-} from "../../internal/styles";
+import { murgaButtonStyles, murgaThemeStyles } from "../../internal/styles";
 
 import type { McOption } from "../../internal/contracts";
 import type { PropertyValues } from "lit";
@@ -32,13 +27,7 @@ export class McSelect extends LitElement {
     delegatesFocus: true,
   };
 
-  static styles = [
-    murgaThemeStyles,
-    murgaButtonStyles,
-    murgaPanelStyles,
-    murgaMetaStyles,
-    componentStyles,
-  ];
+  static styles = [murgaThemeStyles, murgaButtonStyles, componentStyles];
 
   @property({ attribute: false })
   options: McOption[] = [];

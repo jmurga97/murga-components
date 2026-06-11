@@ -5,7 +5,7 @@ import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
 import { findItemById, resolveNextItemId } from "../../internal/selection";
-import { murgaMetaStyles, murgaSurfaceStyles, murgaThemeStyles } from "../../internal/styles";
+import { murgaSurfaceStyles, murgaThemeStyles } from "../../internal/styles";
 import { defineMcThumbnailRail } from "../mc-thumbnail-rail";
 
 import type { McMediaItem } from "../../internal/contracts";
@@ -21,7 +21,7 @@ export class McMediaBrowser extends LitElement {
     delegatesFocus: true,
   };
 
-  static styles = [murgaThemeStyles, murgaSurfaceStyles, murgaMetaStyles, componentStyles];
+  static styles = [murgaThemeStyles, murgaSurfaceStyles, componentStyles];
 
   @property({ attribute: false })
   items: McMediaItem[] = [];

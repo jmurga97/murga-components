@@ -4,6 +4,14 @@
   padding: var(--space-lg);
 }
 
+[part="header"] {
+  font-family: "Space Mono", "JetBrains Mono", "SF Mono", monospace;
+  font-size: var(--label);
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
 .list {
   display: grid;
   gap: var(--space-xs);
@@ -21,6 +29,21 @@
   padding: 12px 0;
   color: var(--text-secondary);
   text-align: left;
+}
+
+.item > span:first-child {
+  font-family: "Space Mono", "JetBrains Mono", "SF Mono", monospace;
+  font-size: var(--label);
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.item > span:last-child:not(:first-child) {
+  font-family: "Space Mono", "JetBrains Mono", "SF Mono", monospace;
+  font-size: var(--caption);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
 }
 
 .empty {

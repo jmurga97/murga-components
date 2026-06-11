@@ -36,6 +36,14 @@
   background: var(--surface-raised);
 }
 
+.stat > div:first-child {
+  font-family: "Space Mono", "JetBrains Mono", "SF Mono", monospace;
+  font-size: var(--label);
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
 .stat-value {
   color: var(--text-display);
   font-family: "Space Mono", "JetBrains Mono", "SF Mono", monospace;
@@ -56,4 +64,8 @@
 
 .status {
   color: var(--text-secondary);
+  font-family: "Space Mono", "JetBrains Mono", "SF Mono", monospace;
+  font-size: var(--caption);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
 }

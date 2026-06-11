@@ -10,6 +10,8 @@ export type McButtonSize = "sm" | "md";
 
 export type McThumbnailRatio = "square" | "landscape" | "portrait";
 
+export type McTheme = "dark" | "light";
+
 export interface McOption {
   id: string;
   label: string;

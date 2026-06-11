@@ -23,8 +23,10 @@ import type { McStatusText, McStatusTextArgs } from "../components/mc-status-tex
 import type { McTagList, McTagListArgs } from "../components/mc-tag-list";
 import type { McTagPicker, McTagPickerArgs } from "../components/mc-tag-picker";
 import type { McTextarea, McTextareaArgs } from "../components/mc-textarea";
+import type { McThemeSwitcher, McThemeSwitcherArgs } from "../components/mc-theme-switcher";
 import type { McThumbnail, McThumbnailArgs } from "../components/mc-thumbnail";
 import type { McThumbnailRail, McThumbnailRailArgs } from "../components/mc-thumbnail-rail";
+import type { McTheme } from "../internal/contracts";
 import type { DetailedHTMLProps, HTMLAttributes } from "react";
 
 export type GenericWebComponent<P, T extends HTMLElement = HTMLElement> = DetailedHTMLProps<
@@ -32,6 +34,10 @@ export type GenericWebComponent<P, T extends HTMLElement = HTMLElement> = Detail
   T
 > &
   Omit<P, "ariaLabel">;
+
+type McThemeSwitcherJsxProps = GenericWebComponent<McThemeSwitcherArgs, McThemeSwitcher> & {
+  "onmc-theme-change"?: (event: CustomEvent<{ theme: McTheme }>) => void;
+};
 
 declare module "react/jsx-runtime" {
   // Module augmentation follows React's JSX namespace contract.
@@ -60,6 +66,7 @@ declare module "react/jsx-runtime" {
       "mc-tag-list": GenericWebComponent<McTagListArgs, McTagList>;
       "mc-tag-picker": GenericWebComponent<McTagPickerArgs, McTagPicker>;
       "mc-textarea": GenericWebComponent<McTextareaArgs, McTextarea>;
+      "mc-theme-switcher": McThemeSwitcherJsxProps;
       "mc-thumbnail": GenericWebComponent<McThumbnailArgs, McThumbnail>;
       "mc-thumbnail-rail": GenericWebComponent<McThumbnailRailArgs, McThumbnailRail>;
     }

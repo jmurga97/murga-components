@@ -4,12 +4,7 @@ import { property } from "lit/decorators.js";
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
-import {
-  murgaButtonStyles,
-  murgaMetaStyles,
-  murgaSurfaceStyles,
-  murgaThemeStyles,
-} from "../../internal/styles";
+import { murgaButtonStyles, murgaSurfaceStyles, murgaThemeStyles } from "../../internal/styles";
 
 import type { McInlineStatus } from "../../internal/contracts";
 
@@ -19,13 +14,7 @@ export const TAG_NAME = MC_RESOURCE_EDITOR_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McResourceEditor extends LitElement {
-  static styles = [
-    murgaThemeStyles,
-    murgaSurfaceStyles,
-    murgaMetaStyles,
-    murgaButtonStyles,
-    componentStyles,
-  ];
+  static styles = [murgaThemeStyles, murgaSurfaceStyles, murgaButtonStyles, componentStyles];
 
   @property({ type: String, attribute: "resource-title" })
   resourceTitle = "";

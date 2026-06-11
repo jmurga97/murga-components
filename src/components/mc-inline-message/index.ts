@@ -3,7 +3,7 @@ import { property } from "lit/decorators.js";
 
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
-import { murgaMetaStyles, murgaPanelStyles, murgaThemeStyles } from "../../internal/styles";
+import { murgaPanelStyles, murgaThemeStyles } from "../../internal/styles";
 
 import type { McStatusTone } from "../../internal/contracts";
 
@@ -13,7 +13,7 @@ export const TAG_NAME = MC_INLINE_MESSAGE_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McInlineMessage extends LitElement {
-  static styles = [murgaThemeStyles, murgaMetaStyles, murgaPanelStyles, componentStyles];
+  static styles = [murgaThemeStyles, murgaPanelStyles, componentStyles];
 
   @property({ type: String, reflect: true })
   tone: McStatusTone = "idle";

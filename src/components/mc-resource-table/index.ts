@@ -6,7 +6,7 @@ import { styleMap } from "lit/directives/style-map.js";
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
-import { murgaLabelStyles, murgaMetaStyles, murgaThemeStyles } from "../../internal/styles";
+import { murgaThemeStyles } from "../../internal/styles";
 
 import type { McTableColumn, McTableRow } from "../../internal/contracts";
 
@@ -16,7 +16,7 @@ export const TAG_NAME = MC_RESOURCE_TABLE_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McResourceTable extends LitElement {
-  static styles = [murgaThemeStyles, murgaLabelStyles, murgaMetaStyles, componentStyles];
+  static styles = [murgaThemeStyles, componentStyles];
 
   @property({ attribute: false })
   columns: McTableColumn[] = [];

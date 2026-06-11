@@ -3,7 +3,7 @@ import { property } from "lit/decorators.js";
 
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
-import { murgaLabelStyles, murgaMetaStyles, murgaThemeStyles } from "../../internal/styles";
+import { murgaThemeStyles } from "../../internal/styles";
 
 export const MC_FIELD_TAG_NAME = "mc-field";
 export const TAG_NAME = MC_FIELD_TAG_NAME;
@@ -11,7 +11,7 @@ export const TAG_NAME = MC_FIELD_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McField extends LitElement {
-  static styles = [murgaThemeStyles, murgaLabelStyles, murgaMetaStyles, componentStyles];
+  static styles = [murgaThemeStyles, componentStyles];
 
   @property({ type: String, attribute: "input-id" })
   inputId?: string;

@@ -5,7 +5,7 @@ import { ifDefined } from "lit/directives/if-defined.js";
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
-import { murgaMetaStyles, murgaThemeStyles } from "../../internal/styles";
+import { murgaThemeStyles } from "../../internal/styles";
 
 import type { McThumbnailRatio } from "../../internal/contracts";
 
@@ -20,7 +20,7 @@ export class McThumbnail extends LitElement {
     delegatesFocus: true,
   };
 
-  static styles = [murgaThemeStyles, murgaMetaStyles, componentStyles];
+  static styles = [murgaThemeStyles, componentStyles];
 
   @property({ type: String, attribute: "item-id" })
   itemId = "";

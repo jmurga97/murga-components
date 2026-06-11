@@ -36,6 +36,34 @@ The root entrypoint has no registration side effects:
 import { McButton, registerMurgaComponents } from "@murga.ing/components";
 ```
 
+## Themes
+
+Components use the dark Nothing-inspired palette by default. The application can switch the
+complete component tree to the light palette by setting `data-mc-theme` on an ancestor:
+
+```html
+<main data-mc-theme="light">
+  <mc-button>Save</mc-button>
+</main>
+```
+
+Theme selection, persistence and operating-system preference handling belong to the application.
+`mc-theme-switcher` is a controlled selector: pass the current `theme` and handle
+`mc-theme-change` to update the ancestor attribute.
+
+```ts
+const switcher = document.querySelector("mc-theme-switcher");
+
+switcher?.addEventListener("mc-theme-change", (event) => {
+  document.documentElement.dataset.mcTheme = event.detail.theme;
+  switcher.theme = event.detail.theme;
+});
+```
+
+The library references Space Grotesk for UI text, Space Mono for labels and data, and Doto for
+display moments, but does not load fonts as an import side effect. Applications should load these
+Google Fonts or provide self-hosted equivalents.
+
 ## React
 
 Import the React entrypoint to add all `mc-*` tags to `JSX.IntrinsicElements`. Presentational
@@ -50,6 +78,12 @@ registerMurgaComponents();
 export function SaveButton() {
   return <mc-button variant="primary">Save</mc-button>;
 }
+```
+
+React 19 can consume the controlled theme selector directly without a wrapper:
+
+```tsx
+<mc-theme-switcher theme={theme} onmc-theme-change={(event) => setTheme(event.detail.theme)} />
 ```
 
 Components with custom events keep React wrappers that expose typed `onMc*` callbacks:

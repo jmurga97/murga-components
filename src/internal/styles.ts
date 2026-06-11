@@ -42,6 +42,21 @@ export const murgaThemeStyles = css`
     font-family: "Space Grotesk", "DM Sans", system-ui, sans-serif;
   }
 
+  :host-context([data-mc-theme="light"]) {
+    --black: #f5f5f5;
+    --surface: #ffffff;
+    --surface-raised: #f0f0f0;
+    --border: #e8e8e8;
+    --border-visible: #cccccc;
+    --text-disabled: #999999;
+    --text-secondary: #666666;
+    --text-primary: #1a1a1a;
+    --text-display: #000000;
+    --info: #666666;
+    --interactive: #007aff;
+    color-scheme: light;
+  }
+
   *,
   *::before,
   *::after {
@@ -61,21 +76,6 @@ export const murgaThemeStyles = css`
     outline: 2px solid var(--text-display);
     outline-offset: 3px;
   }
-`;
-
-export const murgaLabelStyles = css`
-  font-family: "Space Mono", "JetBrains Mono", "SF Mono", monospace;
-  font-size: var(--label);
-  letter-spacing: 0.08em;
-  line-height: 1.2;
-  text-transform: uppercase;
-`;
-
-export const murgaMetaStyles = css`
-  font-family: "Space Mono", "JetBrains Mono", "SF Mono", monospace;
-  font-size: var(--caption);
-  letter-spacing: 0.04em;
-  line-height: 1.4;
 `;
 
 export const murgaButtonStyles = css`

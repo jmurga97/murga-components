@@ -3,7 +3,7 @@ import { property } from "lit/decorators.js";
 
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
-import { murgaMetaStyles, murgaThemeStyles } from "../../internal/styles";
+import { murgaThemeStyles } from "../../internal/styles";
 
 import type { McStatusTone } from "../../internal/contracts";
 
@@ -26,7 +26,7 @@ function getDefaultLabel(tone: McStatusTone) {
 }
 
 export class McStatusText extends LitElement {
-  static styles = [murgaThemeStyles, murgaMetaStyles, componentStyles];
+  static styles = [murgaThemeStyles, componentStyles];
 
   @property({ type: String, reflect: true })
   tone: McStatusTone = "idle";

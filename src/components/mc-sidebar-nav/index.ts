@@ -6,7 +6,7 @@ import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
 import { createFocusTrap } from "../../internal/focus";
-import { murgaLabelStyles, murgaMetaStyles, murgaThemeStyles } from "../../internal/styles";
+import { murgaThemeStyles } from "../../internal/styles";
 
 import type { McNavItem } from "../../internal/contracts";
 import type { PropertyValues } from "lit";
@@ -17,7 +17,7 @@ export const TAG_NAME = MC_SIDEBAR_NAV_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McSidebarNav extends LitElement {
-  static styles = [murgaThemeStyles, murgaLabelStyles, murgaMetaStyles, componentStyles];
+  static styles = [murgaThemeStyles, componentStyles];
 
   @property({ type: String, attribute: "aria-label" })
   ariaLabel = "Main navigation";
