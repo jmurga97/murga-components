@@ -42,6 +42,18 @@
   font-size: var(--subheading);
 }
 
+.stat-value[data-status="success"] {
+  color: var(--success);
+}
+
+.stat-value[data-status="error"] {
+  color: var(--accent);
+}
+
+.stat-value[data-status="loading"] {
+  color: var(--warning);
+}
+
 .status {
   color: var(--text-secondary);
 }

@@ -1,5 +1,5 @@
 import { html, LitElement } from "lit";
-import { property, state } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 
 import componentStylesText from "./styles.css?inline";
@@ -9,7 +9,6 @@ import { normalizeSelectedIds, toggleSelectedId } from "../../internal/selection
 import { murgaLabelStyles, murgaThemeStyles } from "../../internal/styles";
 
 import type { McTagItem } from "../../internal/contracts";
-import type { PropertyValues } from "lit";
 
 export const MC_TAG_LIST_TAG_NAME = "mc-tag-list";
 export const TAG_NAME = MC_TAG_LIST_TAG_NAME;
@@ -28,31 +27,27 @@ export class McTagList extends LitElement {
   @property({ type: Boolean, reflect: true })
   interactive = false;
 
-  @state()
-  private resolvedSelectedIds: string[] = [];
-
-  protected willUpdate(changedProperties: PropertyValues<this>) {
-    if (changedProperties.has("items") || changedProperties.has("selectedIds")) {
-      this.resolvedSelectedIds =
-        this.selectedIds.length > 0
-          ? normalizeSelectedIds(this.selectedIds)
-          : this.items.filter((item) => item.selected).map((item) => item.id);
-    }
+  #getSelectedIds() {
+    return this.selectedIds.length > 0
+      ? normalizeSelectedIds(this.selectedIds)
+      : this.items.filter((item) => item.selected).map((item) => item.id);
   }
 
   #handleSelect(itemId: string) {
-    const nextSelectedIds = toggleSelectedId(this.resolvedSelectedIds, itemId);
+    const nextSelectedIds = toggleSelectedId(this.#getSelectedIds(), itemId);
     dispatchMcEvent(this, "mc-select", { itemId, selectedIds: nextSelectedIds });
   }
 
   render() {
+    const selectedIdSet = new Set(this.#getSelectedIds());
+
     return html`
       <div class="list" part="list">
         ${repeat(
           this.items,
           (item) => item.id,
           (item) => {
-            const isSelected = this.resolvedSelectedIds.includes(item.id);
+            const isSelected = selectedIdSet.has(item.id);
 
             return this.interactive
               ? html`

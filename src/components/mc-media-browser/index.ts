@@ -1,16 +1,14 @@
 import { html, LitElement, nothing } from "lit";
-import { property, state } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
 import { findItemById, resolveNextItemId } from "../../internal/selection";
 import { murgaMetaStyles, murgaSurfaceStyles, murgaThemeStyles } from "../../internal/styles";
+import { defineMcThumbnailRail } from "../mc-thumbnail-rail";
 
 import type { McMediaItem } from "../../internal/contracts";
-import type { PropertyValues } from "lit";
-
-import "../mc-thumbnail-rail";
 
 export const MC_MEDIA_BROWSER_TAG_NAME = "mc-media-browser";
 export const TAG_NAME = MC_MEDIA_BROWSER_TAG_NAME;
@@ -18,6 +16,11 @@ export const TAG_NAME = MC_MEDIA_BROWSER_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McMediaBrowser extends LitElement {
+  static shadowRootOptions: ShadowRootInit = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
   static styles = [murgaThemeStyles, murgaSurfaceStyles, murgaMetaStyles, componentStyles];
 
   @property({ attribute: false })
@@ -32,27 +35,14 @@ export class McMediaBrowser extends LitElement {
   @property({ type: String, attribute: "empty-label" })
   emptyLabel = "No media available";
 
-  @state()
-  private selectedItem: McMediaItem | null = null;
-
-  protected willUpdate(changedProperties: PropertyValues<this>) {
-    if (changedProperties.has("items") || changedProperties.has("selectedId")) {
-      this.selectedItem = findItemById(this.items, this.selectedId) ?? this.items[0] ?? null;
-    }
-  }
-
-  #handleSelect = (event: Event) => {
-    const detail = (event as CustomEvent<{ selectedId: string }>).detail;
-    dispatchMcEvent(this, "mc-select", { selectedId: detail.selectedId });
-  };
-
   #handleKeyDown = (event: KeyboardEvent) => {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
       return;
     }
 
+    const selectedItem = findItemById(this.items, this.selectedId) ?? this.items[0] ?? null;
     const delta = event.key === "ArrowRight" ? 1 : -1;
-    const nextId = resolveNextItemId(this.items, this.selectedId, delta);
+    const nextId = resolveNextItemId(this.items, selectedItem?.id, delta);
 
     if (!nextId) {
       return;
@@ -63,7 +53,9 @@ export class McMediaBrowser extends LitElement {
   };
 
   render() {
-    if (!this.selectedItem) {
+    const selectedItem = findItemById(this.items, this.selectedId) ?? this.items[0] ?? null;
+
+    if (!selectedItem) {
       return html`
         <div class="root" part="root">
           <div>${this.emptyLabel}</div>
@@ -75,10 +67,10 @@ export class McMediaBrowser extends LitElement {
       <section class="root" part="root" tabindex="0" @keydown=${this.#handleKeyDown}>
         <div class="viewport" part="viewport">
           <div class="media" part="media">
-            <img src=${this.selectedItem.src} alt=${this.selectedItem.alt} />
+            <img src=${selectedItem.src} alt=${selectedItem.alt} />
           </div>
-          ${this.selectedItem.caption
-            ? html`<div class="caption">${this.selectedItem.caption}</div>`
+          ${selectedItem.caption
+            ? html`<div class="caption">${selectedItem.caption}</div>`
             : nothing}
           <slot name="meta"></slot>
         </div>
@@ -87,8 +79,7 @@ export class McMediaBrowser extends LitElement {
               <mc-thumbnail-rail
                 part="rail"
                 .items=${this.items}
-                .selectedId=${this.selectedItem.id}
-                @mc-select=${this.#handleSelect}
+                .selectedId=${selectedItem.id}
               ></mc-thumbnail-rail>
             `
           : nothing}
@@ -98,6 +89,8 @@ export class McMediaBrowser extends LitElement {
 }
 
 export function defineMcMediaBrowser() {
+  defineMcThumbnailRail();
+
   if (!customElements.get(MC_MEDIA_BROWSER_TAG_NAME)) {
     customElements.define(MC_MEDIA_BROWSER_TAG_NAME, McMediaBrowser);
   }

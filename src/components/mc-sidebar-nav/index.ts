@@ -111,10 +111,6 @@ export class McSidebarNav extends LitElement {
   }
 
   render() {
-    const items = this.items ?? [];
-    const secondaryItems = this.secondaryItems ?? [];
-    const footerItems = this.footerItems ?? [];
-
     return html`
       <div class="root" part="root">
         ${this.open
@@ -145,17 +141,19 @@ export class McSidebarNav extends LitElement {
           </header>
           <nav class="navigation" part="navigation" aria-label=${this.ariaLabel}>
             <slot name="navigation">
-              <div class="section" part="section">${this.#renderItems(items)}</div>
-              ${secondaryItems.length > 0
+              <div class="section" part="section">${this.#renderItems(this.items)}</div>
+              ${this.secondaryItems.length > 0
                 ? html`<div class="section" part="section">
-                    ${this.#renderItems(secondaryItems)}
+                    ${this.#renderItems(this.secondaryItems)}
                   </div>`
                 : nothing}
             </slot>
           </nav>
           <footer class="footer" part="footer">
-            ${footerItems.length > 0
-              ? html`<div class="footer-actions">${this.#renderItems(footerItems, "footer")}</div>`
+            ${this.footerItems.length > 0
+              ? html`<div class="footer-actions">
+                  ${this.#renderItems(this.footerItems, "footer")}
+                </div>`
               : nothing}
             <slot name="footer"></slot>
           </footer>

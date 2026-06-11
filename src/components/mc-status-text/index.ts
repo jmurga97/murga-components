@@ -1,4 +1,4 @@
-import { html, LitElement } from "lit";
+import { html, LitElement, nothing } from "lit";
 import { property } from "lit/decorators.js";
 
 import componentStylesText from "./styles.css?inline";
@@ -42,8 +42,8 @@ export class McStatusText extends LitElement {
       <span
         class="text"
         part="text"
-        role=${this.polite ? "status" : "presentation"}
-        aria-live=${this.polite ? "polite" : "off"}
+        role=${this.polite ? "status" : nothing}
+        aria-live=${this.polite ? "polite" : nothing}
       >
         ${this.label ?? getDefaultLabel(this.tone)}
       </span>

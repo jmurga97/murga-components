@@ -18,6 +18,11 @@ export const TAG_NAME = MC_SEARCH_FIELD_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McSearchField extends LitElement {
+  static shadowRootOptions: ShadowRootInit = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
   static styles = [murgaThemeStyles, murgaInputSurfaceStyles, murgaButtonStyles, componentStyles];
 
   @property({ type: String })
@@ -63,7 +68,7 @@ export class McSearchField extends LitElement {
 
   render() {
     return html`
-      <div class="root" part="root">
+      <div class="root" part="root" aria-busy=${this.pending ? "true" : "false"}>
         <span class="icon" part="icon">${this.pending ? "[LOADING]" : "[SEARCH]"}</span>
         <input
           part="input"

@@ -1,5 +1,5 @@
 import { html, LitElement, nothing } from "lit";
-import { property, query, state } from "lit/decorators.js";
+import { property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { repeat } from "lit/directives/repeat.js";
 
@@ -27,6 +27,11 @@ export const TAG_NAME = MC_SELECT_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McSelect extends LitElement {
+  static shadowRootOptions: ShadowRootInit = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
   static styles = [
     murgaThemeStyles,
     murgaButtonStyles,
@@ -65,24 +70,7 @@ export class McSelect extends LitElement {
   @query(".panel")
   private readonly panelElement?: HTMLElement;
 
-  @state()
-  private selectedOption: McOption | null = null;
-
-  @state()
-  private displayLabel = this.placeholder;
-
   readonly #listboxId = `${SELECT_LISTBOX_PREFIX}-${++selectListboxCount}`;
-
-  protected willUpdate(changedProperties: PropertyValues<this>) {
-    if (
-      changedProperties.has("options") ||
-      changedProperties.has("selectedId") ||
-      changedProperties.has("placeholder")
-    ) {
-      this.selectedOption = findItemById(this.options, this.selectedId);
-      this.displayLabel = this.selectedOption?.label ?? this.placeholder;
-    }
-  }
 
   protected updated(changedProperties: PropertyValues<this>) {
     if (this.triggerElement) {
@@ -93,13 +81,22 @@ export class McSelect extends LitElement {
       syncAttribute(this.triggerElement, "aria-label", this.ariaLabel);
     }
 
-    if (changedProperties.has("open") && this.open) {
-      queueMicrotask(() => {
-        const selectedOption = this.panelElement?.querySelector<HTMLButtonElement>(
-          '.option[aria-selected="true"]',
-        );
-        selectedOption?.focus();
-      });
+    if (!changedProperties.has("open")) {
+      return;
+    }
+
+    if (this.open) {
+      const selectedOption = this.panelElement?.querySelector<HTMLButtonElement>(
+        '.option[aria-selected="true"]:not(:disabled)',
+      );
+      const firstOption =
+        this.panelElement?.querySelector<HTMLButtonElement>(".option:not(:disabled)");
+      (selectedOption ?? firstOption)?.focus();
+      return;
+    }
+
+    if (changedProperties.get("open") === true) {
+      this.triggerElement?.focus();
     }
   }
 
@@ -108,12 +105,7 @@ export class McSelect extends LitElement {
   };
 
   #handleTriggerKeyDown = (event: KeyboardEvent) => {
-    if (
-      event.key === "ArrowDown" ||
-      event.key === "Enter" ||
-      event.key === " " ||
-      event.key === "Spacebar"
-    ) {
+    if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       dispatchMcEvent(this, "mc-open-change", { open: true });
     }
@@ -121,7 +113,7 @@ export class McSelect extends LitElement {
 
   #handlePanelKeyDown = (event: KeyboardEvent) => {
     const optionElements = Array.from(
-      this.panelElement?.querySelectorAll<HTMLButtonElement>(".option") ?? [],
+      this.panelElement?.querySelectorAll<HTMLButtonElement>(".option:not(:disabled)") ?? [],
     );
 
     if (event.key === "Escape") {
@@ -152,6 +144,8 @@ export class McSelect extends LitElement {
   }
 
   render() {
+    const selectedOption = findItemById(this.options, this.selectedId);
+
     return html`
       <div class="field" part="field">
         <input
@@ -171,8 +165,8 @@ export class McSelect extends LitElement {
           @click=${this.#handleTriggerClick}
           @keydown=${this.#handleTriggerKeyDown}
         >
-          <span class=${this.selectedOption ? "value" : "value placeholder"}
-            >${this.displayLabel}</span
+          <span class=${selectedOption ? "value" : "value placeholder"}
+            >${selectedOption?.label ?? this.placeholder}</span
           >
           <span>${this.open ? "[OPEN]" : "[CLOSED]"}</span>
         </button>

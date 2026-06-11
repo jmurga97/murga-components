@@ -3,7 +3,7 @@ import { property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import componentStylesText from "./styles.css?inline";
-import { syncAriaAttributes, syncAttribute } from "../../internal/attributes";
+import { syncAriaAttributes } from "../../internal/attributes";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
 import { murgaThemeStyles } from "../../internal/styles";
@@ -14,6 +14,11 @@ export const TAG_NAME = MC_CHECKBOX_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McCheckbox extends LitElement {
+  static shadowRootOptions: ShadowRootInit = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
   static styles = [murgaThemeStyles, componentStyles];
 
   @property({ type: Boolean, reflect: true })
@@ -38,12 +43,9 @@ export class McCheckbox extends LitElement {
   private readonly inputElement?: HTMLInputElement;
 
   updated() {
-    if (!this.inputElement) {
-      return;
+    if (this.inputElement) {
+      syncAriaAttributes(this, this.inputElement);
     }
-
-    syncAriaAttributes(this, this.inputElement);
-    syncAttribute(this.inputElement, "aria-label", this.ariaLabel);
   }
 
   #handleChange = (event: Event) => {
@@ -62,9 +64,10 @@ export class McCheckbox extends LitElement {
           type="checkbox"
           name=${ifDefined(this.name)}
           value=${this.value}
-          ?checked=${this.checked}
+          .checked=${this.checked}
           ?disabled=${this.disabled}
           ?required=${this.required}
+          aria-label=${ifDefined(this.ariaLabel ?? undefined)}
           @change=${this.#handleChange}
         />
         <span class="indicator" part="indicator">${this.checked ? "■" : ""}</span>

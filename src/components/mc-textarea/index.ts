@@ -14,6 +14,11 @@ export const TAG_NAME = MC_TEXTAREA_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McTextarea extends LitElement {
+  static shadowRootOptions: ShadowRootInit = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
   static styles = [murgaThemeStyles, murgaInputSurfaceStyles, componentStyles];
 
   @property({ type: String })
@@ -59,7 +64,6 @@ export class McTextarea extends LitElement {
 
     syncAriaAttributes(this, this.textareaElement);
     syncAttribute(this.textareaElement, "aria-invalid", this.invalid ? "true" : null);
-    syncAttribute(this.textareaElement, "aria-label", this.ariaLabel);
   }
 
   #handleInput = (event: Event) => {

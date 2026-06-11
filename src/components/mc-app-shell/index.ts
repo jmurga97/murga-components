@@ -13,6 +13,7 @@ export const MC_APP_SHELL_TAG_NAME = "mc-app-shell";
 export const TAG_NAME = MC_APP_SHELL_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
+const DESKTOP_SIDEBAR_MEDIA_QUERY = "(min-width: 960px)";
 
 export class McAppShell extends LitElement {
   static styles = [murgaThemeStyles, murgaPanelStyles, componentStyles];
@@ -26,9 +27,18 @@ export class McAppShell extends LitElement {
   @query(".sidebar")
   private readonly sidebarElement?: HTMLElement;
 
+  #desktopSidebarMedia?: MediaQueryList;
   #releaseFocusTrap: (() => void) | null = null;
 
+  connectedCallback() {
+    super.connectedCallback();
+    this.#desktopSidebarMedia = window.matchMedia(DESKTOP_SIDEBAR_MEDIA_QUERY);
+    this.#desktopSidebarMedia.addEventListener("change", this.#syncFocusTrap);
+  }
+
   disconnectedCallback() {
+    this.#desktopSidebarMedia?.removeEventListener("change", this.#syncFocusTrap);
+    this.#desktopSidebarMedia = undefined;
     this.#releaseFocusTrap?.();
     this.#releaseFocusTrap = null;
     super.disconnectedCallback();
@@ -40,11 +50,11 @@ export class McAppShell extends LitElement {
     }
   }
 
-  #syncFocusTrap() {
+  #syncFocusTrap = () => {
     this.#releaseFocusTrap?.();
     this.#releaseFocusTrap = null;
 
-    if (!this.mobileOverlay || !this.sidebarOpen) {
+    if (!this.mobileOverlay || !this.sidebarOpen || this.#desktopSidebarMedia?.matches) {
       return;
     }
 
@@ -57,7 +67,7 @@ export class McAppShell extends LitElement {
         dispatchMcEvent(this, "mc-sidebar-open-change", { open: false });
       },
     });
-  }
+  };
 
   #handleOverlayClick = () => {
     dispatchMcEvent(this, "mc-sidebar-open-change", { open: false });
@@ -79,7 +89,12 @@ export class McAppShell extends LitElement {
               ></button>
             `
           : nothing}
-        <aside class="sidebar" part="sidebar">
+        <aside
+          class="sidebar"
+          part="sidebar"
+          .inert=${!this.sidebarOpen}
+          aria-hidden=${this.sidebarOpen ? nothing : "true"}
+        >
           <slot name="sidebar"></slot>
         </aside>
         <main class="main" part="main">

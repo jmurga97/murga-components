@@ -1,4 +1,4 @@
-import { html, LitElement } from "lit";
+import { html, LitElement, nothing } from "lit";
 import { property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 
@@ -55,7 +55,7 @@ export class McRelationshipPanel extends LitElement {
                   (item) => html`
                     <button class="item" type="button" @click=${() => this.#handleSelect(item.id)}>
                       <span>${item.label}</span>
-                      ${item.count !== undefined ? html`<span>${item.count}</span>` : null}
+                      ${item.count !== undefined ? html`<span>${item.count}</span>` : nothing}
                     </button>
                   `,
                 )}

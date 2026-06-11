@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Runtime check</title>
+  </head>
+  <body>
+    <button id="before">Before</button>
+    <mc-tag-picker id="picker"></mc-tag-picker>
+    <mc-textarea id="textarea" aria-label="Notes"></mc-textarea>
+    <mc-tag-list id="tags"></mc-tag-list>
+    <mc-resource-editor id="editor"></mc-resource-editor>
+    <mc-overview-panel id="overview"></mc-overview-panel>
+    <mc-app-shell id="shell">
+      <button slot="sidebar">Sidebar action</button>
+      <div slot="main">Main</div>
+    </mc-app-shell>
+    <pre id="results"></pre>
+
+    <script type="module">
+      import { defineMcAppShell } from "/src/components/mc-app-shell/index.ts";
+      import { defineMcOverviewPanel } from "/src/components/mc-overview-panel/index.ts";
+      import { defineMcResourceEditor } from "/src/components/mc-resource-editor/index.ts";
+      import { defineMcTagList } from "/src/components/mc-tag-list/index.ts";
+      import { defineMcTagPicker } from "/src/components/mc-tag-picker/index.ts";
+      import { defineMcTextarea } from "/src/components/mc-textarea/index.ts";
+
+      defineMcAppShell();
+      defineMcOverviewPanel();
+      defineMcResourceEditor();
+      defineMcTagList();
+      defineMcTagPicker();
+      defineMcTextarea();
+
+      const picker = document.querySelector("#picker");
+      const textarea = document.querySelector("#textarea");
+      const tags = document.querySelector("#tags");
+      const editor = document.querySelector("#editor");
+      const overview = document.querySelector("#overview");
+      const shell = document.querySelector("#shell");
+      const before = document.querySelector("#before");
+      const results = document.querySelector("#results");
+
+      picker.options = [
+        { id: "disabled", label: "Disabled", disabled: true },
+        { id: "selected", label: "Selected" },
+        { id: "other", label: "Other" },
+      ];
+      picker.selectedIds = ["selected", "selected"];
+      picker.open = true;
+      let pickerChange;
+      picker.addEventListener("mc-change", (event) => {
+        pickerChange = event.detail;
+      });
+      await picker.updateComplete;
+
+      const focusedPickerOption =
+        picker.shadowRoot.activeElement?.value ??
+        picker.shadowRoot.querySelector("input:focus")?.value ??
+        null;
+      picker.shadowRoot.querySelector('input[value="other"]').click();
+
+      picker.open = false;
+      await picker.updateComplete;
+      const pickerRestoredFocus = picker.shadowRoot.activeElement?.classList.contains("trigger");
+
+      textarea.focus();
+      const textareaDelegatesFocus = textarea.shadowRoot.activeElement?.localName === "textarea";
+      const textareaAriaLabel = textarea.shadowRoot.querySelector("textarea").getAttribute("aria-label");
+
+      tags.items = [
+        { id: "one", label: "One", selected: true },
+        { id: "two", label: "Two" },
+      ];
+      tags.interactive = true;
+      let tagSelection;
+      tags.addEventListener("mc-select", (event) => {
+        tagSelection = event.detail;
+      });
+      await tags.updateComplete;
+      tags.shadowRoot.querySelectorAll("button")[1].click();
+
+      editor.saving = true;
+      await editor.updateComplete;
+
+      overview.stats = [
+        { id: "ok", label: "OK", value: "1", status: "success" },
+        { id: "error", label: "Error", value: "2", status: "error" },
+      ];
+      await overview.updateComplete;
+
+      await shell.updateComplete;
+      const sidebar = shell.shadowRoot.querySelector(".sidebar");
+      const closedSidebarInert = sidebar.inert;
+      const closedSidebarHidden = sidebar.getAttribute("aria-hidden");
+
+      before.focus();
+      shell.sidebarOpen = true;
+      await shell.updateComplete;
+      await new Promise((resolve) => queueMicrotask(resolve));
+      const desktopFocusPreserved =
+        !matchMedia("(min-width: 960px)").matches || document.activeElement === before;
+
+      results.textContent = JSON.stringify(
+        {
+          focusedPickerOption,
+          pickerChange,
+          pickerPublicSelection: picker.selectedIds,
+          pickerRestoredFocus,
+          textareaDelegatesFocus,
+          textareaAriaLabel,
+          tagSelection,
+          tagPublicSelection: tags.selectedIds,
+          editorBusy: editor.shadowRoot.querySelector(".root").getAttribute("aria-busy"),
+          editorButtonsDisabled: [...editor.shadowRoot.querySelectorAll("button")].every(
+            (button) => button.disabled,
+          ),
+          overviewUsesStaticState: [...overview.shadowRoot.querySelectorAll(".stat-value")].every(
+            (value) => !value.hasAttribute("style") && value.hasAttribute("data-status"),
+          ),
+          closedSidebarInert,
+          closedSidebarHidden,
+          desktopFocusPreserved,
+        },
+        null,
+        2,
+      );
+    </script>
+  </body>
+</html>

@@ -1,12 +1,10 @@
 import { html, LitElement } from "lit";
-import { property, state } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
 import { murgaButtonStyles, murgaMetaStyles, murgaThemeStyles } from "../../internal/styles";
-
-import type { PropertyValues } from "lit";
 
 export const MC_PAGINATION_TAG_NAME = "mc-pagination";
 export const TAG_NAME = MC_PAGINATION_TAG_NAME;
@@ -31,59 +29,38 @@ export class McPagination extends LitElement {
   @property({ type: Boolean, reflect: true })
   disabled = false;
 
-  @state()
-  private totalPages = 0;
-
-  @state()
-  private disablePrevious = true;
-
-  @state()
-  private disableNext = true;
-
-  protected willUpdate(changedProperties: PropertyValues<this>) {
-    if (
-      changedProperties.has("page") ||
-      changedProperties.has("pageSize") ||
-      changedProperties.has("total") ||
-      changedProperties.has("hasMore") ||
-      changedProperties.has("disabled")
-    ) {
-      this.totalPages =
-        this.total > 0 && this.pageSize > 0 ? Math.ceil(this.total / this.pageSize) : 0;
-      this.disablePrevious = this.disabled || this.page <= 1;
-      this.disableNext =
-        this.disabled ||
-        (!this.hasMore && this.totalPages > 0 && this.page >= this.totalPages) ||
-        (!this.hasMore && this.totalPages === 0);
-    }
-  }
-
   #handlePageChange(nextPage: number) {
     dispatchMcEvent(this, "mc-page-change", { page: nextPage });
   }
 
   render() {
+    const totalPages =
+      this.total > 0 && this.pageSize > 0 ? Math.ceil(this.total / this.pageSize) : 0;
+    const disablePrevious = this.disabled || this.page <= 1;
+    const disableNext =
+      this.disabled ||
+      (!this.hasMore && totalPages > 0 && this.page >= totalPages) ||
+      (!this.hasMore && totalPages === 0);
+
     return html`
       <nav class="root" part="root" aria-label="Pagination">
         <button
           part="prev-button"
           type="button"
           aria-label="Go to previous page"
-          ?disabled=${this.disablePrevious}
+          ?disabled=${disablePrevious}
           @click=${() => this.#handlePageChange(Math.max(1, this.page - 1))}
         >
           [PREV]
         </button>
         <span class="meta" part="meta">
-          ${this.totalPages > 0
-            ? `[PAGE ${this.page} / ${this.totalPages}]`
-            : `[PAGE ${this.page}]`}
+          ${totalPages > 0 ? `[PAGE ${this.page} / ${totalPages}]` : `[PAGE ${this.page}]`}
         </span>
         <button
           part="next-button"
           type="button"
           aria-label="Go to next page"
-          ?disabled=${this.disableNext}
+          ?disabled=${disableNext}
           @click=${() => this.#handlePageChange(this.page + 1)}
         >
           [NEXT]

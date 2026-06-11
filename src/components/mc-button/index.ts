@@ -13,6 +13,11 @@ export const TAG_NAME = MC_BUTTON_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McButton extends LitElement {
+  static shadowRootOptions: ShadowRootInit = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
   static styles = [murgaThemeStyles, murgaButtonStyles, componentStyles];
 
   @property({ type: String })

@@ -14,6 +14,11 @@ export const TAG_NAME = MC_INPUT_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McInput extends LitElement {
+  static shadowRootOptions: ShadowRootInit = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
   static styles = [murgaThemeStyles, murgaInputSurfaceStyles, componentStyles];
 
   @property({ type: String })
@@ -62,7 +67,6 @@ export class McInput extends LitElement {
 
     syncAriaAttributes(this, this.inputElement);
     syncAttribute(this.inputElement, "aria-invalid", this.invalid ? "true" : null);
-    syncAttribute(this.inputElement, "aria-label", this.ariaLabel);
   }
 
   #handleInput = (event: Event) => {

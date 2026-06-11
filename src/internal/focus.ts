@@ -60,6 +60,7 @@ export function createFocusTrap(
 ) {
   const previousActiveElement =
     document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  let active = true;
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === "Escape") {
@@ -97,10 +98,13 @@ export function createFocusTrap(
 
   document.addEventListener("keydown", handleKeyDown);
   queueMicrotask(() => {
-    focusFirstElement(container);
+    if (active) {
+      focusFirstElement(container);
+    }
   });
 
   return () => {
+    active = false;
     document.removeEventListener("keydown", handleKeyDown);
 
     if (previousActiveElement?.isConnected) {

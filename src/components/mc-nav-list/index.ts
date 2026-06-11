@@ -47,7 +47,7 @@ export class McNavList extends LitElement {
                 @click=${() => this.#handleSelect(item.id)}
               >
                 <span class="label" part="label">${item.label}</span>
-                ${item.count !== undefined ? html`<span part="meta">${item.count}</span>` : null}
+                ${item.count !== undefined ? html`<span part="meta">${item.count}</span>` : nothing}
               </button>
             `,
           )}

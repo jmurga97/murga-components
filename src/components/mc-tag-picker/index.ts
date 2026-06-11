@@ -1,5 +1,5 @@
 import { html, LitElement, nothing } from "lit";
-import { property, state } from "lit/decorators.js";
+import { property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { repeat } from "lit/directives/repeat.js";
 
@@ -17,12 +17,20 @@ import {
 import type { McOption } from "../../internal/contracts";
 import type { PropertyValues } from "lit";
 
+const TAG_PICKER_PANEL_PREFIX = "mc-tag-picker-panel";
+let tagPickerPanelCount = 0;
+
 export const MC_TAG_PICKER_TAG_NAME = "mc-tag-picker";
 export const TAG_NAME = MC_TAG_PICKER_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McTagPicker extends LitElement {
+  static shadowRootOptions: ShadowRootInit = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
   static styles = [
     murgaThemeStyles,
     murgaButtonStyles,
@@ -46,18 +54,31 @@ export class McTagPicker extends LitElement {
   @property({ type: Boolean, reflect: true })
   open = false;
 
-  @state()
-  private normalizedSelectedIds: string[] = [];
+  @query(".trigger")
+  private readonly triggerElement?: HTMLButtonElement;
 
-  @state()
-  private selectedCount = 0;
+  @query(".panel")
+  private readonly panelElement?: HTMLElement;
 
-  readonly #listboxId = `mc-tag-picker-listbox-${Math.random().toString(36).slice(2)}`;
+  readonly #panelId = `${TAG_PICKER_PANEL_PREFIX}-${++tagPickerPanelCount}`;
 
-  protected willUpdate(changedProperties: PropertyValues<this>) {
-    if (changedProperties.has("selectedIds")) {
-      this.normalizedSelectedIds = normalizeSelectedIds(this.selectedIds);
-      this.selectedCount = this.normalizedSelectedIds.length;
+  protected updated(changedProperties: PropertyValues<this>) {
+    if (!changedProperties.has("open")) {
+      return;
+    }
+
+    if (this.open) {
+      const selectedOption = this.panelElement?.querySelector<HTMLInputElement>(
+        "input:checked:not(:disabled)",
+      );
+      const firstOption =
+        this.panelElement?.querySelector<HTMLInputElement>("input:not(:disabled)");
+      (selectedOption ?? firstOption)?.focus();
+      return;
+    }
+
+    if (changedProperties.get("open") === true) {
+      this.triggerElement?.focus();
     }
   }
 
@@ -66,59 +87,57 @@ export class McTagPicker extends LitElement {
   };
 
   #handleOptionToggle(optionId: string) {
-    const nextSelectedIds = toggleSelectedId(this.normalizedSelectedIds, optionId);
+    const nextSelectedIds = toggleSelectedId(normalizeSelectedIds(this.selectedIds), optionId);
     dispatchMcEvent(this, "mc-change", { selectedIds: nextSelectedIds });
   }
 
+  #handlePanelKeyDown = (event: KeyboardEvent) => {
+    if (event.key !== "Escape") {
+      return;
+    }
+
+    event.preventDefault();
+    dispatchMcEvent(this, "mc-open-change", { open: false });
+  };
+
   render() {
+    const selectedIds = normalizeSelectedIds(this.selectedIds);
+    const selectedIdSet = new Set(selectedIds);
+
     return html`
       <div part="field">
-        <input
-          id=${ifDefined(this.inputId)}
-          type="hidden"
-          value=${this.normalizedSelectedIds.join(",")}
-        />
+        <input id=${ifDefined(this.inputId)} type="hidden" value=${selectedIds.join(",")} />
         <button
           class="trigger"
           part="trigger"
           type="button"
           ?disabled=${this.disabled}
-          aria-controls=${this.#listboxId}
+          aria-controls=${this.#panelId}
           aria-expanded=${this.open ? "true" : "false"}
-          aria-haspopup="listbox"
           @click=${this.#handleTriggerClick}
         >
           <span
-            >${this.selectedCount > 0 ? `[${this.selectedCount} SELECTED]` : "[SELECT TAGS]"}</span
+            >${selectedIds.length > 0 ? `[${selectedIds.length} SELECTED]` : "[SELECT TAGS]"}</span
           >
           <span>${this.open ? "[OPEN]" : "[CLOSED]"}</span>
         </button>
         ${this.open
           ? html`
               <div
-                id=${this.#listboxId}
+                id=${this.#panelId}
                 class="panel"
                 part="panel"
-                role="listbox"
-                aria-multiselectable="true"
+                @keydown=${this.#handlePanelKeyDown}
               >
                 ${repeat(
                   this.options,
                   (option) => option.id,
                   (option) => html`
-                    <label
-                      class="option"
-                      part="option"
-                      role="option"
-                      aria-selected=${this.normalizedSelectedIds.includes(option.id)
-                        ? "true"
-                        : "false"}
-                    >
+                    <label class="option" part="option">
                       <input
                         type="checkbox"
                         value=${option.id}
-                        tabindex="-1"
-                        ?checked=${this.normalizedSelectedIds.includes(option.id)}
+                        .checked=${selectedIdSet.has(option.id)}
                         ?disabled=${this.disabled || Boolean(option.disabled)}
                         @change=${() => this.#handleOptionToggle(option.id)}
                       />

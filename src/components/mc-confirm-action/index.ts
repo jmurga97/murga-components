@@ -52,7 +52,7 @@ export class McConfirmAction extends LitElement {
     }
 
     return html`
-      <div class="root" part="root">
+      <div class="root" part="root" aria-busy=${this.pending ? "true" : "false"}>
         <div class="message" part="message">${this.message}</div>
         <div class="actions" part="actions">
           <button

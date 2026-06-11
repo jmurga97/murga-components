@@ -15,6 +15,11 @@ export const TAG_NAME = MC_THUMBNAIL_TAG_NAME;
 const componentStyles = createComponentStyles(componentStylesText);
 
 export class McThumbnail extends LitElement {
+  static shadowRootOptions: ShadowRootInit = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
+
   static styles = [murgaThemeStyles, murgaMetaStyles, componentStyles];
 
   @property({ type: String, attribute: "item-id" })
@@ -52,7 +57,7 @@ export class McThumbnail extends LitElement {
         part="button"
         type="button"
         aria-pressed=${this.selected ? "true" : "false"}
-        aria-label=${ifDefined(this.alt || this.itemId)}
+        aria-label=${ifDefined(this.alt || this.itemId || undefined)}
         ?disabled=${this.disabled}
         @click=${this.#handleClick}
       >

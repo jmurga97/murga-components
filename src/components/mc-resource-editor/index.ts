@@ -49,15 +49,14 @@ export class McResourceEditor extends LitElement {
   }
 
   render() {
+    const statusLabel = this.status?.label ?? (this.dirty ? "[DIRTY]" : null);
+    const busy = this.saving || this.deleting;
+
     return html`
-      <section class="root" part="root">
+      <section class="root" part="root" aria-busy=${busy ? "true" : "false"}>
         <header part="header">
           <div>${this.resourceTitle}</div>
-          ${this.status
-            ? html`<div>${this.status.label}</div>`
-            : this.dirty
-              ? html`<div>[DIRTY]</div>`
-              : nothing}
+          ${statusLabel ? html`<div>${statusLabel}</div>` : nothing}
         </header>
 
         <div class="layout">
@@ -71,25 +70,13 @@ export class McResourceEditor extends LitElement {
 
         <footer class="footer" part="footer">
           <slot name="actions"></slot>
-          <button
-            type="button"
-            ?disabled=${this.saving || this.deleting}
-            @click=${() => this.#handleAction("save")}
-          >
+          <button type="button" ?disabled=${busy} @click=${() => this.#handleAction("save")}>
             ${this.saving ? "[LOADING]" : "[SAVE]"}
           </button>
-          <button
-            type="button"
-            ?disabled=${this.saving || this.deleting}
-            @click=${() => this.#handleAction("cancel")}
-          >
+          <button type="button" ?disabled=${busy} @click=${() => this.#handleAction("cancel")}>
             [CANCEL]
           </button>
-          <button
-            type="button"
-            ?disabled=${this.saving || this.deleting}
-            @click=${() => this.#handleAction("delete")}
-          >
+          <button type="button" ?disabled=${busy} @click=${() => this.#handleAction("delete")}>
             ${this.deleting ? "[LOADING]" : "[DELETE]"}
           </button>
         </footer>

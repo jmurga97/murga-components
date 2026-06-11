@@ -4,12 +4,10 @@ import { repeat } from "lit/directives/repeat.js";
 
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
-import { dispatchMcEvent } from "../../internal/events";
 import { murgaThemeStyles } from "../../internal/styles";
+import { defineMcThumbnail } from "../mc-thumbnail";
 
 import type { McMediaItem, McOrientation } from "../../internal/contracts";
-
-import "../mc-thumbnail";
 
 export const MC_THUMBNAIL_RAIL_TAG_NAME = "mc-thumbnail-rail";
 export const TAG_NAME = MC_THUMBNAIL_RAIL_TAG_NAME;
@@ -31,11 +29,6 @@ export class McThumbnailRail extends LitElement {
   @property({ type: String, reflect: true })
   orientation: McOrientation = "horizontal";
 
-  #handleSelect = (event: Event) => {
-    const detail = (event as CustomEvent<{ selectedId: string }>).detail;
-    dispatchMcEvent(this, "mc-select", { selectedId: detail.selectedId });
-  };
-
   render() {
     return html`
       <div class="rail" part="rail" aria-label=${this.ariaLabel} role="list">
@@ -49,7 +42,6 @@ export class McThumbnailRail extends LitElement {
                 .src=${item.thumbnailSrc ?? item.src}
                 .alt=${item.alt}
                 .selected=${this.selectedId === item.id}
-                @mc-select=${this.#handleSelect}
               ></mc-thumbnail>
             </div>
           `,
@@ -60,6 +52,8 @@ export class McThumbnailRail extends LitElement {
 }
 
 export function defineMcThumbnailRail() {
+  defineMcThumbnail();
+
   if (!customElements.get(MC_THUMBNAIL_RAIL_TAG_NAME)) {
     customElements.define(MC_THUMBNAIL_RAIL_TAG_NAME, McThumbnailRail);
   }

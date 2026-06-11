@@ -1,7 +1,6 @@
 import { html, LitElement, nothing } from "lit";
 import { property } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
-import { styleMap } from "lit/directives/style-map.js";
 
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
@@ -40,26 +39,6 @@ export class McOverviewPanel extends LitElement {
   @property({ attribute: false })
   status: McInlineStatus | null = null;
 
-  #getStatColor(status?: McStatItem["status"]) {
-    switch (status) {
-      case undefined:
-      case "idle":
-        return "var(--text-display)";
-      case "success":
-        return "var(--success)";
-      case "error":
-        return "var(--accent)";
-      case "loading":
-        return "var(--warning)";
-    }
-  }
-
-  #getStatValueStyles(status?: McStatItem["status"]) {
-    return styleMap({
-      color: this.#getStatColor(status),
-    });
-  }
-
   render() {
     return html`
       <section class="root" part="root">
@@ -79,7 +58,7 @@ export class McOverviewPanel extends LitElement {
                   (item) => html`
                     <article class="stat">
                       <div>${item.label}</div>
-                      <div class="stat-value" style=${this.#getStatValueStyles(item.status)}>
+                      <div class="stat-value" data-status=${item.status ?? nothing}>
                         ${item.value}
                       </div>
                     </article>

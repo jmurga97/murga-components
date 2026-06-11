@@ -63,8 +63,8 @@ export class McResourceTable extends LitElement {
   render() {
     if (this.loading) {
       return html`
-        <div class="root" part="root">
-          <div class="loading">[LOADING]</div>
+        <div class="root" part="root" aria-busy="true">
+          <div class="loading" role="status">[LOADING]</div>
         </div>
       `;
     }
@@ -88,7 +88,7 @@ export class McResourceTable extends LitElement {
                 this.columns,
                 (column) => column.id,
                 (column) => html`
-                  <th style=${this.#getColumnHeaderStyles(column)}>
+                  <th scope="col" style=${this.#getColumnHeaderStyles(column)}>
                     ${column.sortable
                       ? html`
                           <button
