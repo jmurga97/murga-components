@@ -1,4 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Doto:wght@600&family=Space+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap");
+
+@font-face {
+  font-family: "Geist Pixel Line";
+  src: url("../fonts/GeistPixel-Line.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
 
 :root {
   font-family: "Space Grotesk", sans-serif;
@@ -116,9 +124,9 @@ body:has(.playground[data-mc-theme="light"]) {
 
 .hero h1 {
   margin: 12px 0 18px;
-  font-family: "Doto", sans-serif;
+  font-family: "Geist Pixel Line", "Space Mono", monospace;
   font-size: clamp(3rem, 8vw, 7rem);
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: -0.06em;
   line-height: 0.88;
 }

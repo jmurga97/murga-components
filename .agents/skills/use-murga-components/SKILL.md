@@ -1,6 +1,6 @@
 ---
 name: use-murga-components
-description: Integrate the `@murga.ing/components` Lit component library into React and TypeScript applications. Use when installing Murga Components, registering custom elements, choosing between direct `mc-*` JSX tags and React wrappers, wiring controlled state and `mc-*` custom events, handling client-only registration in SSR frameworks, applying themes or CSS parts, or troubleshooting Murga component types and runtime behavior.
+description: Integrate the `@murga.ing/components` Lit component library into React and TypeScript applications. Use when installing Murga Components, registering custom elements, installing the bundled Geist Pixel Line WOFF2 font, choosing between direct `mc-*` JSX tags and React wrappers, wiring controlled state and `mc-*` custom events, handling client-only registration in SSR frameworks, applying themes or CSS parts, or troubleshooting Murga component types and runtime behavior.
 ---
 
 # Use Murga Components
@@ -12,11 +12,12 @@ Integrate Murga Components without bypassing its registration, event, accessibil
 1. Inspect the target project's package manager, React version, rendering model, and existing application entrypoint.
 2. Inspect the installed `@murga.ing/components/package.json` and type declarations when available. Treat package exports and peer dependencies as version-specific.
 3. Install the package with the target project's existing package manager. Do not switch package managers or use the old `@murga/components` name.
-4. Register either the complete library once or only the components the application uses.
-5. Import `@murga.ing/components/react` in React TypeScript projects that render `mc-*` JSX tags or use wrappers.
-6. Choose direct JSX or a React wrapper using the rules below.
-7. Keep application state, routing, persistence, and data fetching outside the components.
-8. Run the target project's typecheck, lint, build, and relevant tests.
+4. Install the bundled Geist Pixel Line font into the React application's public assets when the design uses Murga display typography.
+5. Register either the complete library once or only the components the application uses.
+6. Import `@murga.ing/components/react` in React TypeScript projects that render `mc-*` JSX tags or use wrappers.
+7. Choose direct JSX or a React wrapper using the rules below.
+8. Keep application state, routing, persistence, and data fetching outside the components.
+9. Run the target project's typecheck, lint, build, and relevant tests.
 
 ## Register Components
 
@@ -109,7 +110,14 @@ Set `data-mc-theme="dark"` or `data-mc-theme="light"` on a shared ancestor. The 
 <main data-mc-theme={theme}>{children}</main>
 ```
 
-Load Space Grotesk, Space Mono, and Doto in the application when matching the library's intended typography. The package does not load fonts.
+Install the bundled Geist Pixel Line font when matching Murga's display typography. For a Vite
+React application, copy the exported WOFF2 file into that application's `public/fonts` directory
+and declare it in globally imported CSS. Read
+[references/react-integration.md](references/react-integration.md) for single-app and monorepo
+examples.
+
+Load Space Grotesk and Space Mono separately when matching the complete typography system. The
+package does not register fonts as an import side effect.
 
 Style component hosts normally. Customize shadow DOM only through inherited CSS custom properties and exposed parts:
 
@@ -131,6 +139,7 @@ Do not target private shadow-DOM class names or copy component internals into th
 - Confirm TypeScript sees `mc-*` JSX tags after importing the React entrypoint.
 - Confirm wrapper names and event detail shapes against the installed declarations.
 - Confirm controlled values update after each custom event.
+- Confirm the Geist Pixel Line request returns a WOFF2 response instead of falling back silently.
 - Confirm the target project's React version satisfies current peer dependencies.
 - Run the existing checks; do not introduce a new test framework unless requested.
 

@@ -10,8 +10,67 @@ Use this reference after inspecting the installed package version. The inventory
 | `@murga.ing/components/register` | `registerMurgaComponents()` |
 | `@murga.ing/components/react` | JSX type augmentation, React wrappers, wrapper prop types, and registration re-export |
 | `@murga.ing/components/components/mc-*` | One component and its `defineMc*()` function |
+| `@murga.ing/components/fonts/geist-pixel-line.woff2` | Bundled Geist Pixel Line webfont |
 
 The root and component entrypoints do not register custom elements as an import side effect.
+
+## Install Geist Pixel Line
+
+Treat the font as an application asset. Copy it from the installed package into the React
+application's public directory instead of importing the WOFF2 from TypeScript or relying on a
+machine-local font.
+
+For a single Vite React application:
+
+```bash
+mkdir -p public/fonts
+cp "$(node -p "require.resolve('@murga.ing/components/fonts/geist-pixel-line.woff2')")" \
+  public/fonts/GeistPixel-Line.woff2
+```
+
+For a Bun workspace shaped like `apps/<app>`, run from the workspace root and target the specific
+application:
+
+```bash
+mkdir -p apps/photos-admin/public/fonts
+cp "$(node -p "require.resolve('@murga.ing/components/fonts/geist-pixel-line.woff2')")" \
+  apps/photos-admin/public/fonts/GeistPixel-Line.woff2
+```
+
+Declare the font near the top of the application's global tokens or stylesheet:
+
+```css
+@font-face {
+  font-family: "Geist Pixel Line";
+  src: url("/fonts/GeistPixel-Line.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --font-display: "Geist Pixel Line", "Space Mono", monospace;
+}
+```
+
+Import that global stylesheet once from the React entrypoint:
+
+```tsx
+import "./styles/global.css";
+```
+
+Use the display face selectively:
+
+```css
+.page-title,
+.hero-value {
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+```
+
+Do not use Geist Pixel Line for body copy, form values, or small labels. Keep it for large display
+headings and hero data. Do not commit references to a developer's local font directory.
 
 ## React Setup
 
