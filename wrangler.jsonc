@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "murga-components-cdn",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-06-12",
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "cdn.murga.ing",
+      "custom_domain": true,
+    },
+  ],
+  "r2_buckets": [
+    {
+      "binding": "ASSETS",
+      "bucket_name": "murga-components-cdn",
+    },
+  ],
+  "observability": {
+    "enabled": true,
+  },
+}

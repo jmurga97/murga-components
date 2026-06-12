@@ -12,7 +12,14 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url));
-const typeScriptFiles = ["src/**/*.{ts,tsx}", "playground/**/*.{ts,tsx}", "vite.config.ts"];
+const typeScriptFiles = [
+  "src/**/*.{ts,tsx}",
+  "playground/**/*.{ts,tsx}",
+  "scripts/**/*.ts",
+  "worker/**/*.ts",
+  "vite.config.ts",
+  "vite.cdn.config.ts",
+];
 const reactFiles = ["src/react/**/*.{ts,tsx}", "src/react.ts", "playground/**/*.{ts,tsx}"];
 const litFiles = ["src/components/**/*.ts"];
 
@@ -36,7 +43,7 @@ const typeCheckedConfigs = tseslint.configs.recommendedTypeChecked.map((config) 
 
 export default defineConfig(
   {
-    ignores: ["dist/**", "node_modules/**", "bun.lock"],
+    ignores: ["cdn-dist/**", "dist/**", "node_modules/**", ".wrangler/**", "bun.lock"],
   },
   {
     files: typeScriptFiles,
@@ -116,6 +123,16 @@ export default defineConfig(
       ],
     },
     settings: importSettings,
+  },
+  {
+    files: ["worker/**/*.ts"],
+    languageOptions: {
+      parserOptions: {
+        project: path.join(rootDir, "tsconfig.worker.json"),
+        projectService: false,
+        tsconfigRootDir: rootDir,
+      },
+    },
   },
   {
     files: reactFiles,

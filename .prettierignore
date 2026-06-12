@@ -1,4 +1,6 @@
 .agents
+cdn-dist
 dist
 node_modules
 bun.lock
+.wrangler

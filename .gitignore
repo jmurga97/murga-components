@@ -1,4 +1,6 @@
+cdn-dist
 dist
 node_modules
+.wrangler
 *.tgz
 .DS_Store

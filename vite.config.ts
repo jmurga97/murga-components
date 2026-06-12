@@ -20,7 +20,7 @@ export default defineConfig({
     react(),
     dts({
       entryRoot: "src",
-      exclude: ["playground"],
+      exclude: ["playground", "src/cdn.ts"],
       include: ["src"],
       tsconfigPath: "./tsconfig.lib.json",
     }),

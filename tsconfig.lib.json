@@ -10,5 +10,5 @@
     "sourceMap": true
   },
   "include": ["src"],
-  "exclude": ["playground"]
+  "exclude": ["playground", "src/cdn.ts"]
 }

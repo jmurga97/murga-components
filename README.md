@@ -36,6 +36,50 @@ The root entrypoint has no registration side effects:
 import { McButton, registerMurgaComponents } from "@murga.ing/components";
 ```
 
+## CDN
+
+The browser distribution bundles Lit and registers every `mc-*` element automatically. Pin a
+version in production:
+
+```html
+<link
+  rel="stylesheet"
+  href="https://cdn.murga.ing/v/1.0.0/murga-components.css"
+  crossorigin="anonymous"
+/>
+<script
+  type="module"
+  src="https://cdn.murga.ing/v/1.0.0/murga-components.js"
+  crossorigin="anonymous"
+></script>
+```
+
+`/latest/*` redirects to the current release and is intended for demos and development. Each
+version also exposes a manifest containing SHA-384 integrity values:
+
+```text
+https://cdn.murga.ing/v/1.0.0/manifest.json
+```
+
+The CDN stylesheet declares the bundled Geist Pixel Line font as `Geist Pixel Line`. Space
+Grotesk, Space Mono and Doto remain application-provided fonts.
+
+### Icons
+
+The versioned SVG sprite is generated from the first-party files in `icons/`. The CDN module loads
+it once and injects it into the application document because browsers do not permit cross-origin
+external references from `<use>`. Filenames become stable `mc-*` symbol IDs:
+
+```html
+<svg role="img" aria-label="Search" width="24" height="24">
+  <use href="#mc-search"></use>
+</svg>
+```
+
+New icon files must use kebab-case names, include a numeric `viewBox` and contain no scripts,
+event-handler attributes or external references. Applications with a Content Security Policy must
+allow `https://cdn.murga.ing` in `connect-src` for the sprite request.
+
 ## Themes
 
 Components use the dark Nothing-inspired palette by default. The application can switch the
@@ -124,8 +168,41 @@ The Vite playground is intended for manual component inspection.
 bun run lint
 bun run check
 bun run build
+bun run build:cdn
 bun run package:check
 ```
+
+## CDN operations
+
+The CDN Worker reads immutable releases from the `murga-components-cdn` R2 bucket. Create that
+bucket once, then deploy the Worker:
+
+```bash
+bunx wrangler login
+bunx wrangler r2 bucket create murga-components-cdn
+bun run build:cdn
+bun run worker:deploy
+bun run cdn:publish
+```
+
+For local verification, build and seed Wrangler's local R2 storage before starting the Worker:
+
+```bash
+bun run build:cdn
+bun run cdn:seed:local
+bun run worker:dev
+```
+
+Publishing is automated by `.github/workflows/release.yml` for tags matching `v*`. The tag must
+equal the version in `package.json`. Configure these GitHub Actions secrets:
+
+- `NPM_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+- `CLOUDFLARE_API_TOKEN`
+
+The Cloudflare token needs permission to deploy Workers, edit Worker routes and write to the R2
+bucket. The `cdn.murga.ing` zone must exist in the same Cloudflare account so Wrangler can attach
+the configured Custom Domain.
 
 ## Design principles
 
