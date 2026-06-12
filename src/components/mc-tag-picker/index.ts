@@ -1,4 +1,4 @@
-import { html, LitElement, nothing } from "lit";
+import { html, nothing } from "lit";
 import { property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { repeat } from "lit/directives/repeat.js";
@@ -6,6 +6,7 @@ import { repeat } from "lit/directives/repeat.js";
 import componentStylesText from "./styles.css?inline";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
+import { PointerDownOutsideElement } from "../../internal/pointer";
 import { normalizeSelectedIds, toggleSelectedId } from "../../internal/selection";
 import { murgaButtonStyles, murgaThemeStyles } from "../../internal/styles";
 
@@ -20,9 +21,9 @@ export const TAG_NAME = MC_TAG_PICKER_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
-export class McTagPicker extends LitElement {
+export class McTagPicker extends PointerDownOutsideElement {
   static shadowRootOptions: ShadowRootInit = {
-    ...LitElement.shadowRootOptions,
+    ...PointerDownOutsideElement.shadowRootOptions,
     delegatesFocus: true,
   };
 
@@ -50,8 +51,17 @@ export class McTagPicker extends LitElement {
   private readonly panelElement?: HTMLElement;
 
   readonly #panelId = `${TAG_PICKER_PANEL_PREFIX}-${++tagPickerPanelCount}`;
+  #restoreTriggerFocusOnClose = false;
+
+  protected willUpdate(changedProperties: PropertyValues<this>) {
+    if (changedProperties.get("open") === true && !this.open) {
+      this.#restoreTriggerFocusOnClose = this.matches(":focus-within");
+    }
+  }
 
   protected updated(changedProperties: PropertyValues<this>) {
+    super.updated(changedProperties);
+
     if (!changedProperties.has("open")) {
       return;
     }
@@ -66,9 +76,15 @@ export class McTagPicker extends LitElement {
       return;
     }
 
-    if (changedProperties.get("open") === true) {
+    if (changedProperties.get("open") === true && this.#restoreTriggerFocusOnClose) {
       this.triggerElement?.focus();
     }
+
+    this.#restoreTriggerFocusOnClose = false;
+  }
+
+  protected handlePointerDownOutside() {
+    dispatchMcEvent(this, "mc-open-change", { open: false });
   }
 
   #handleTriggerClick = () => {

@@ -1,4 +1,4 @@
-import { html, LitElement, nothing } from "lit";
+import { html, nothing } from "lit";
 import { property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { repeat } from "lit/directives/repeat.js";
@@ -7,6 +7,7 @@ import componentStylesText from "./styles.css?inline";
 import { syncAriaAttributes, syncAttribute } from "../../internal/attributes";
 import { createComponentStyles } from "../../internal/component-styles";
 import { dispatchMcEvent } from "../../internal/events";
+import { PointerDownOutsideElement } from "../../internal/pointer";
 import { findItemById } from "../../internal/selection";
 import { murgaButtonStyles, murgaThemeStyles } from "../../internal/styles";
 
@@ -21,9 +22,9 @@ export const TAG_NAME = MC_SELECT_TAG_NAME;
 
 const componentStyles = createComponentStyles(componentStylesText);
 
-export class McSelect extends LitElement {
+export class McSelect extends PointerDownOutsideElement {
   static shadowRootOptions: ShadowRootInit = {
-    ...LitElement.shadowRootOptions,
+    ...PointerDownOutsideElement.shadowRootOptions,
     delegatesFocus: true,
   };
 
@@ -60,8 +61,17 @@ export class McSelect extends LitElement {
   private readonly panelElement?: HTMLElement;
 
   readonly #listboxId = `${SELECT_LISTBOX_PREFIX}-${++selectListboxCount}`;
+  #restoreTriggerFocusOnClose = false;
+
+  protected willUpdate(changedProperties: PropertyValues<this>) {
+    if (changedProperties.get("open") === true && !this.open) {
+      this.#restoreTriggerFocusOnClose = this.matches(":focus-within");
+    }
+  }
 
   protected updated(changedProperties: PropertyValues<this>) {
+    super.updated(changedProperties);
+
     if (this.triggerElement) {
       syncAriaAttributes(this, this.triggerElement);
       syncAttribute(this.triggerElement, "aria-controls", this.#listboxId);
@@ -84,9 +94,15 @@ export class McSelect extends LitElement {
       return;
     }
 
-    if (changedProperties.get("open") === true) {
+    if (changedProperties.get("open") === true && this.#restoreTriggerFocusOnClose) {
       this.triggerElement?.focus();
     }
+
+    this.#restoreTriggerFocusOnClose = false;
+  }
+
+  protected handlePointerDownOutside() {
+    dispatchMcEvent(this, "mc-open-change", { open: false });
   }
 
   #handleTriggerClick = () => {
@@ -108,7 +124,6 @@ export class McSelect extends LitElement {
     if (event.key === "Escape") {
       event.preventDefault();
       dispatchMcEvent(this, "mc-open-change", { open: false });
-      this.triggerElement?.focus();
       return;
     }
 
